@@ -752,11 +752,6 @@
                     <option value="120">120 FPS (Ultra High)</option>
                 </select>
             </div>
-
-            <div class="control-group">
-                <label class="control-label">Action</label>
-                <button id="resetButton" class="control-button">Reset</button>
-            </div>
         </div>
 
         <div style="margin-top: 20px; padding-top: 20px; border-top: 2px solid #e0e0e0;">
@@ -892,7 +887,6 @@
     <script>
         // DOM Elements
         const frameRateSelect = document.getElementById('frameRate');
-        const resetButton = document.getElementById('resetButton');
         const startButton = document.getElementById('startButton');
         const tapButton = document.getElementById('tapButton');
         const resetBtn = document.getElementById('resetBtn');
@@ -998,7 +992,7 @@
                 marker.appendChild(tick);
                 marker.appendChild(label);
 
-                // Add beat markers
+                // Add beat markers if they exist
                 if (beatMarkers.includes(f)) {
                     const beatMarker = document.createElement('div');
                     beatMarker.className = 'beat-marker';
@@ -1008,6 +1002,8 @@
                     tooltip.textContent = `Frame ${f}`;
                     
                     beatMarker.appendChild(tooltip);
+                    beatMarker.addEventListener('click', () => removeBeat(f));
+                    
                     marker.appendChild(beatMarker);
                 }
 
@@ -1015,299 +1011,190 @@
             }
         }
 
-        // Update beat summary
-        function updateBeatSummary() {
-            if (beatMarkers.length === 0) {
-                beatSummarySection.style.display = 'none';
-                return;
-            }
-
-            beatSummarySection.style.display = 'block';
-            beatSummaryContent.innerHTML = '';
-
-            beatMarkers.forEach((frameNum, index) => {
-                const item = document.createElement('div');
-                item.style.display = 'grid';
-                item.style.gap = '8px';
-                item.style.alignItems = 'center';
-                
-                const beatLabel = document.createElement('div');
-                beatLabel.className = 'beat-summary-item beat-num';
-                beatLabel.textContent = `Beat ${index + 1}`;
-                
-                const frameLabel = document.createElement('div');
-                frameLabel.className = 'beat-summary-item frame-num';
-                frameLabel.textContent = frameNum;
-                
-                item.appendChild(beatLabel);
-                item.appendChild(frameLabel);
-                
-                beatSummaryContent.appendChild(item);
-            });
-        }
-
         // Update display
         function updateDisplay() {
-            tapCountDisplay.textContent = beatMarkers.length;
-            beatCountDisplay.textContent = beatMarkers.length;
-            displayRangeStart.textContent = rangeStartInput.value || 0;
-            displayRangeEnd.textContent = rangeEndInput.value || 100;
-
-            if (!isRunning) {
-                statusDisplay.textContent = 'Ready';
-                statusDisplay.style.color = '#999';
-            } else {
-                statusDisplay.textContent = 'Running';
-                statusDisplay.style.color = '#4caf50';
-            }
-
-            drawTimeline();
-            updateBeatSummary();
-        }
-
-        // Mark beat on current frame
-        function markBeat() {
-            if (!isRunning || countdownActive) return;
-
-            const rangeStart = parseInt(rangeStartInput.value) || 0;
-            const rangeEnd = parseInt(rangeEndInput.value) || 100;
-
-            if (currentFrame >= rangeStart && currentFrame <= rangeEnd) {
-                if (!beatMarkers.includes(currentFrame)) {
-                    beatMarkers.push(currentFrame);
-                    beatMarkers.sort((a, b) => a - b);
+            if (isRunning && !countdownActive) {
+                const elapsed = Date.now() - runStartTime;
+                const rangeStart = parseInt(rangeStartInput.value) || 0;
+                const rangeEnd = parseInt(rangeEndInput.value) || 100;
+                
+                currentFrame = Math.floor((elapsed / 1000) * frameRate) + rangeStart;
+                
+                // Stop at end of range
+                if (currentFrame > rangeEnd) {
+                    currentFrame = rangeEnd;
+                    isRunning = false;
+                    statusDisplay.textContent = 'Complete';
+                    statusDisplay.style.color = '#667eea';
                 }
             }
 
+            currentFrameDisplay.textContent = currentFrame;
+            tapCountDisplay.textContent = beatMarkers.length;
+            beatCountDisplay.textContent = beatMarkers.length;
+            drawTimeline();
+            
+            if (isRunning) {
+                requestAnimationFrame(updateDisplay);
+            }
+        }
+
+        // Add beat
+        function addBeat() {
+            if (isRunning && !beatMarkers.includes(currentFrame)) {
+                beatMarkers.push(currentFrame);
+                beatMarkers.sort((a, b) => a - b);
+                updateDisplay();
+            }
+        }
+
+        // Remove beat
+        function removeBeat(frame) {
+            const index = beatMarkers.indexOf(frame);
+            if (index > -1) {
+                beatMarkers.splice(index, 1);
+                updateDisplay();
+            }
+        }
+
+        // Reset
+        function reset() {
+            isRunning = false;
+            countdownActive = false;
+            currentFrame = 0;
+            beatMarkers = [];
+            statusDisplay.textContent = 'Ready';
+            statusDisplay.style.color = '#999';
+            countdownOverlay.classList.remove('active');
             updateDisplay();
         }
 
-        // Start button
-        startButton.addEventListener('click', () => {
-            if (!isRunning && !countdownActive) {
-                startCountdown();
-            }
-        });
-
-        // Tap button
-        tapButton.addEventListener('click', () => {
-            markBeat();
-        });
-
-        // Spacebar handling
-        document.addEventListener('keydown', (e) => {
-            if (e.code === 'Space') {
-                e.preventDefault();
-                
-                if (!isRunning && !countdownActive) {
-                    startCountdown();
-                } else if (isRunning && !countdownActive) {
-                    markBeat();
-                }
-            }
-        });
-
-        // Frame rate change
+        // Event listeners
         frameRateSelect.addEventListener('change', (e) => {
             frameRate = parseInt(e.target.value);
         });
 
-        // Range change
-        rangeStartInput.addEventListener('change', () => {
-            updateDisplay();
-        });
-        
-        rangeEndInput.addEventListener('change', () => {
-            updateDisplay();
-        });
-
-        // Reset button
-        resetButton.addEventListener('click', reset);
+        startButton.addEventListener('click', startCountdown);
+        tapButton.addEventListener('click', addBeat);
         resetBtn.addEventListener('click', reset);
 
-        function reset() {
-            isRunning = false;
-            beatMarkers = [];
-            currentFrame = 0;
-            currentFrameDisplay.textContent = '0';
-            startButton.textContent = 'Start (Spacebar)';
-            updateDisplay();
-        }
-
-        // Audio file upload
-        uploadBtn.addEventListener('click', () => {
-            audioInput.click();
+        // Keyboard shortcuts
+        document.addEventListener('keydown', (e) => {
+            if (e.code === 'Space') {
+                e.preventDefault();
+                if (!isRunning && !countdownActive) {
+                    startCountdown();
+                } else if (isRunning) {
+                    addBeat();
+                }
+            }
         });
 
-        audioInput.addEventListener('change', (e) => {
+        rangeStartInput.addEventListener('change', drawTimeline);
+        rangeEndInput.addEventListener('change', () => {
+            displayRangeEnd.textContent = rangeEndInput.value;
+            drawTimeline();
+        });
+        rangeStartInput.addEventListener('change', () => {
+            displayRangeStart.textContent = rangeStartInput.value;
+            drawTimeline();
+        });
+
+        // Audio handling
+        uploadBtn.addEventListener('click', () => audioInput.click());
+        audioInput.addEventListener('change', async (e) => {
             const file = e.target.files[0];
             if (file) {
-                loadAudio(file);
+                audioFilename.textContent = file.name;
+                const arrayBuffer = await file.arrayBuffer();
+                initAudioContext();
+                audioBuffer = await audioContext.decodeAudioData(arrayBuffer);
+                waveformSection.classList.add('active');
+                drawWaveform();
             }
         });
 
-        // Drag and drop
-        document.addEventListener('dragover', (e) => {
-            e.preventDefault();
-        });
-
-        document.addEventListener('drop', (e) => {
-            e.preventDefault();
-            const file = e.dataTransfer.files[0];
-            if (file && file.type.startsWith('audio/')) {
-                loadAudio(file);
-            }
-        });
-
-        // Load audio
-        function loadAudio(file) {
-            initAudioContext();
-            audioFilename.textContent = file.name;
-
-            const reader = new FileReader();
-            reader.onload = (event) => {
-                audioContext.decodeAudioData(event.target.result, (buffer) => {
-                    audioBuffer = buffer;
-                    analyser = audioContext.createAnalyser();
-                    analyser.fftSize = 256;
-
-                    // Draw waveform
-                    const rawData = new Float32Array(buffer.getChannelData(0));
-                    const samples = rawData.length;
-                    const blockSize = Math.floor(samples / 256);
-                    const filteredData = [];
-
-                    for (let i = 0; i < 256; i++) {
-                        let sum = 0;
-                        for (let j = 0; j < blockSize; j++) {
-                            sum += Math.abs(rawData[i * blockSize + j]);
-                        }
-                        filteredData.push((sum / blockSize) * 255);
-                    }
-
-                    drawWaveform(new Uint8Array(filteredData));
-                    waveformSection.classList.add('active');
-                }, (error) => {
-                    console.error('Error decoding audio:', error);
-                    audioFilename.textContent = 'Error loading file';
-                });
-            };
-            reader.readAsArrayBuffer(file);
-        }
-
-        // Draw waveform
-        function drawWaveform(dataArray) {
-            const ctx = waveformCanvas.getContext('2d');
-            const width = waveformCanvas.offsetWidth;
-            const height = waveformCanvas.offsetHeight;
-
-            waveformCanvas.width = width;
-            waveformCanvas.height = height;
-
-            ctx.fillStyle = '#f8f9ff';
-            ctx.fillRect(0, 0, width, height);
-
-            ctx.strokeStyle = '#667eea';
-            ctx.lineWidth = 2;
-            ctx.beginPath();
-
-            const bufferLength = dataArray.length;
-            const sliceWidth = width / bufferLength;
-            let x = 0;
-
-            for (let i = 0; i < bufferLength; i++) {
-                const v = dataArray[i] / 128.0;
-                const y = (v * height) / 2;
-
-                if (i === 0) {
-                    ctx.moveTo(x, y);
-                } else {
-                    ctx.lineTo(x, y);
-                }
-
-                x += sliceWidth;
-            }
-
-            ctx.lineTo(width, height / 2);
-            ctx.stroke();
-        }
-
-        // Play button
         playBtn.addEventListener('click', () => {
-            if (!audioBuffer || !audioContext) return;
-
-            if (isPlaying) {
-                audioSource.stop();
-                isPlaying = false;
-                playBtn.classList.remove('active');
-                playBtn.textContent = '▶ Play';
-                return;
+            if (audioBuffer && !isPlaying) {
+                initAudioContext();
+                audioSource = audioContext.createBufferSource();
+                audioSource.buffer = audioBuffer;
+                analyser = audioContext.createAnalyser();
+                audioSource.connect(analyser);
+                analyser.connect(audioContext.destination);
+                audioSource.start(0);
+                isPlaying = true;
+                playBtn.classList.add('active');
+                pauseBtn.classList.remove('active');
             }
-
-            audioSource = audioContext.createBufferSource();
-            audioSource.buffer = audioBuffer;
-            audioSource.connect(analyser);
-            analyser.connect(audioContext.destination);
-            audioSource.start(0);
-            isPlaying = true;
-            playBtn.classList.add('active');
-            playBtn.textContent = '⏹ Stop';
-
-            audioSource.onended = () => {
-                isPlaying = false;
-                playBtn.classList.remove('active');
-                playBtn.textContent = '▶ Play';
-            };
         });
 
-        // Pause button
         pauseBtn.addEventListener('click', () => {
             if (isPlaying && audioSource) {
                 audioSource.stop();
                 isPlaying = false;
                 playBtn.classList.remove('active');
-                playBtn.textContent = '▶ Play';
+                pauseBtn.classList.add('active');
             }
         });
 
-        // Clear audio
         clearAudioBtn.addEventListener('click', () => {
-            if (isPlaying && audioSource) {
-                audioSource.stop();
-                isPlaying = false;
-                playBtn.classList.remove('active');
-                playBtn.textContent = '▶ Play';
-            }
             audioBuffer = null;
-            audioSource = null;
-            analyser = null;
             audioFilename.textContent = 'No audio loaded';
             waveformSection.classList.remove('active');
-            audioInput.value = '';
+            isPlaying = false;
+            playBtn.classList.remove('active');
+            pauseBtn.classList.remove('active');
         });
 
-        // Microphone beat detection
+        // Waveform drawing
+        function drawWaveform() {
+            if (!audioBuffer) return;
+            
+            const canvas = waveformCanvas;
+            const ctx = canvas.getContext('2d');
+            const data = audioBuffer.getChannelData(0);
+            const step = Math.ceil(data.length / canvas.width);
+            const amp = canvas.height / 2;
+            
+            ctx.fillStyle = '#f8f9ff';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            ctx.strokeStyle = '#667eea';
+            ctx.lineWidth = 1;
+            
+            ctx.beginPath();
+            for (let i = 0; i < canvas.width; i++) {
+                let min = 1.0;
+                let max = -1.0;
+                for (let j = 0; j < step; j++) {
+                    const datum = data[i * step + j];
+                    if (datum < min) min = datum;
+                    if (datum > max) max = datum;
+                }
+                ctx.lineTo(i, amp - max * amp);
+                ctx.lineTo(i, amp - min * amp);
+            }
+            ctx.stroke();
+        }
+
+        // Mic handling
         micBtn.addEventListener('click', async () => {
             if (!micActive) {
                 try {
-                    initAudioContext();
                     micStream = await navigator.mediaDevices.getUserMedia({ audio: true });
-                    const micSource = audioContext.createMediaStreamSource(micStream);
+                    initAudioContext();
+                    const source = audioContext.createMediaStreamAudioSource(micStream);
                     micAnalyser = audioContext.createAnalyser();
-                    micAnalyser.fftSize = 2048;
-                    micSource.connect(micAnalyser);
-
+                    source.connect(micAnalyser);
+                    micAnalyser.connect(audioContext.destination);
                     micActive = true;
                     micBtn.classList.add('active');
-                    micStatus.textContent = 'Mic enabled - speak/snap to mark beats';
-                    
-                    detectMicBeats();
-                } catch (error) {
-                    console.error('Microphone error:', error);
-                    micStatus.textContent = 'Microphone access denied';
+                    micStatus.textContent = 'Mic enabled';
+                    detectBeatsFromMic();
+                } catch (err) {
+                    micStatus.textContent = 'Mic access denied';
                 }
             } else {
-                // Disable mic
                 if (micStream) {
                     micStream.getTracks().forEach(track => track.stop());
                 }
@@ -1317,56 +1204,31 @@
             }
         });
 
-        // Detect beats from microphone using waveform peak detection
-        function detectMicBeats() {
+        // Beat detection from mic
+        function detectBeatsFromMic() {
             if (!micActive || !micAnalyser) return;
-
+            
             const dataArray = new Uint8Array(micAnalyser.frequencyBinCount);
             micAnalyser.getByteFrequencyData(dataArray);
-
-            // Calculate RMS (root mean square) for better beat detection
+            
             let sum = 0;
             for (let i = 0; i < dataArray.length; i++) {
-                sum += dataArray[i] * dataArray[i];
+                sum += dataArray[i];
             }
-            const rms = Math.sqrt(sum / dataArray.length);
-
-            // If RMS is above threshold and cooldown has passed, mark as beat
-            const now = Date.now();
-            if (rms > beatDetectionThreshold && (now - lastBeatTime) > beatCooldown && isRunning) {
-                markBeat();
-                lastBeatTime = now;
+            const average = sum / dataArray.length;
+            
+            if (average > beatDetectionThreshold && Date.now() - lastBeatTime > beatCooldown) {
+                addBeat();
+                lastBeatTime = Date.now();
             }
-
-            requestAnimationFrame(detectMicBeats);
+            
+            if (micActive) {
+                requestAnimationFrame(detectBeatsFromMic);
+            }
         }
 
-        // Initialize
-        updateDisplay();
-
-        // Main animation loop
-        let lastFrameUpdate = 0;
-        function animationLoop() {
-            const now = Date.now();
-            if (now - lastFrameUpdate >= 16) {
-                if (isRunning) {
-                    const rangeEnd = parseInt(rangeEndInput.value) || 100;
-                    currentFrame = Math.floor((Date.now() - runStartTime) * frameRate / 1000);
-                    
-                    // Stop at end of range
-                    if (currentFrame > rangeEnd) {
-                        isRunning = false;
-                        statusDisplay.textContent = 'Finished';
-                        statusDisplay.style.color = '#4caf50';
-                    }
-                    
-                    currentFrameDisplay.textContent = currentFrame;
-                }
-                lastFrameUpdate = now;
-            }
-            requestAnimationFrame(animationLoop);
-        }
-        animationLoop();
+        // Initial draw
+        drawTimeline();
     </script>
 </body>
 </html>
