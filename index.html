@@ -793,16 +793,6 @@
                 </div>
             </div>
 
-            <div>
-                <label class="control-label" style="display: block; margin-bottom: 10px;">Microphone Beat Detection</label>
-                <div class="mic-section">
-                    <button id="micBtn" class="mic-btn">🎤 Enable Mic</button>
-                    <div class="mic-status" id="micStatus">Mic disabled</div>
-                </div>
-            </div>
-        </div>
-    </div>
-
     <div class="instructions">
         <h3>How to Use Frempo</h3>
         <div class="instructions-list">
@@ -1191,57 +1181,8 @@
             }
             ctx.stroke();
         }
-
-        // Mic handling
-        micBtn.addEventListener('click', async () => {
-            if (!micActive) {
-                try {
-                    micStream = await navigator.mediaDevices.getUserMedia({ audio: true });
-                    initAudioContext();
-                    const source = audioContext.createMediaStreamAudioSource(micStream);
-                    micAnalyser = audioContext.createAnalyser();
-                    source.connect(micAnalyser);
-                    micAnalyser.connect(audioContext.destination);
-                    micActive = true;
-                    micBtn.classList.add('active');
-                    micStatus.textContent = 'Mic enabled';
-                    detectBeatsFromMic();
-                } catch (err) {
-                    micStatus.textContent = 'Mic access denied';
-                }
-            } else {
-                if (micStream) {
-                    micStream.getTracks().forEach(track => track.stop());
-                }
-                micActive = false;
-                micBtn.classList.remove('active');
-                micStatus.textContent = 'Mic disabled';
-            }
-        });
-
-        // Beat detection from mic
-        function detectBeatsFromMic() {
-            if (!micActive || !micAnalyser) return;
-            
-            const dataArray = new Uint8Array(micAnalyser.frequencyBinCount);
-            micAnalyser.getByteFrequencyData(dataArray);
-            
-            let sum = 0;
-            for (let i = 0; i < dataArray.length; i++) {
-                sum += dataArray[i];
-            }
-            const average = sum / dataArray.length;
-            
-            if (average > beatDetectionThreshold && Date.now() - lastBeatTime > beatCooldown) {
-                addBeat();
-                lastBeatTime = Date.now();
-            }
-            
-            if (micActive) {
-                requestAnimationFrame(detectBeatsFromMic);
-            }
-        }
-
+});
+        
         // Initial draw
         drawTimeline();
     </script>
