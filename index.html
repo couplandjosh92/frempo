@@ -12,129 +12,147 @@
         }
 
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            font-family: 'Monaco', 'Courier New', monospace;
+            background: #1a1a1a;
+            color: #e0e0e0;
             min-height: 100vh;
             display: flex;
-            justify-content: center;
-            align-items: center;
+            flex-direction: column;
             padding: 20px;
         }
 
-        .container {
-            background: white;
-            border-radius: 20px;
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
-            padding: 40px;
-            max-width: 600px;
-            width: 100%;
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding: 15px;
+            background: #252525;
+            border-radius: 5px;
+            border-left: 4px solid #667eea;
         }
 
         h1 {
-            text-align: center;
-            color: #333;
-            margin-bottom: 10px;
-            font-size: 28px;
+            font-size: 24px;
+            color: #667eea;
+            margin: 0;
         }
 
-        .subtitle {
-            text-align: center;
-            color: #666;
-            margin-bottom: 30px;
-            font-size: 14px;
+        .controls-section {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr 1fr;
+            gap: 15px;
+            margin-bottom: 20px;
         }
 
-        .audio-section {
-            background: #f8f9fa;
-            border-radius: 15px;
-            padding: 20px;
-            margin-bottom: 25px;
-            border: 2px dashed #ddd;
+        .control-group {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+
+        .control-label {
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: #888;
+        }
+
+        .control-input, .control-button {
+            padding: 8px 12px;
+            background: #2a2a2a;
+            border: 1px solid #404040;
+            color: #e0e0e0;
+            font-family: 'Monaco', monospace;
+            font-size: 12px;
+            border-radius: 3px;
+            cursor: pointer;
             transition: all 0.2s ease;
         }
 
-        .audio-section.dragover {
-            background: #e8eaf6;
+        .control-input:hover {
             border-color: #667eea;
         }
 
-        .audio-upload-label {
-            display: block;
-            color: #666;
-            font-size: 12px;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            margin-bottom: 12px;
-            font-weight: 600;
+        .control-input:focus {
+            outline: none;
+            border-color: #667eea;
+            background: #2f2f2f;
+        }
+
+        .control-button {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border: none;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .control-button:hover {
+            opacity: 0.9;
+            transform: translateY(-1px);
+        }
+
+        .control-button:active {
+            transform: translateY(0);
+        }
+
+        .audio-section {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 20px;
+            align-items: center;
+        }
+
+        .audio-upload-wrapper {
+            flex: 1;
+            display: flex;
+            gap: 10px;
         }
 
         .audio-input {
             display: none;
         }
 
-        .upload-area {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 12px;
+        .upload-btn {
+            padding: 8px 16px;
+            background: #2a2a2a;
+            border: 1px solid #404040;
+            color: #e0e0e0;
+            font-size: 12px;
+            border-radius: 3px;
             cursor: pointer;
-            padding: 20px;
+            transition: all 0.2s ease;
         }
 
-        .upload-icon {
-            font-size: 32px;
-        }
-
-        .upload-text {
-            color: #666;
-            font-size: 13px;
-            text-align: center;
-        }
-
-        .upload-text strong {
-            color: #667eea;
+        .upload-btn:hover {
+            border-color: #667eea;
         }
 
         .audio-filename {
-            color: #667eea;
+            padding: 8px 12px;
+            background: #2a2a2a;
+            border: 1px solid #404040;
+            border-radius: 3px;
             font-size: 12px;
-            font-weight: 600;
-            margin-top: 10px;
-        }
-
-        .waveform-container {
-            background: #1a1a2e;
-            border-radius: 10px;
-            padding: 15px;
-            margin-top: 15px;
-            display: none;
-        }
-
-        .waveform-container.active {
-            display: block;
-        }
-
-        canvas {
-            width: 100%;
-            height: auto;
-            display: block;
-            border-radius: 8px;
+            color: #888;
+            flex: 1;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
         }
 
         .audio-controls {
             display: flex;
-            gap: 10px;
-            margin-top: 15px;
-            justify-content: center;
+            gap: 5px;
         }
 
         .audio-btn {
-            padding: 8px 16px;
-            font-size: 13px;
-            border: 2px solid #ddd;
-            border-radius: 8px;
-            background: white;
-            color: #666;
+            padding: 6px 12px;
+            background: #2a2a2a;
+            border: 1px solid #404040;
+            color: #e0e0e0;
+            font-size: 11px;
+            border-radius: 3px;
             cursor: pointer;
             transition: all 0.2s ease;
         }
@@ -144,256 +162,272 @@
             color: #667eea;
         }
 
-        .audio-btn.play {
+        .audio-btn.active {
             background: #667eea;
+            border-color: #667eea;
             color: white;
-            border-color: #667eea;
         }
 
-        .audio-btn.play:hover {
-            background: #764ba2;
-            border-color: #764ba2;
+        .timeline-container {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            background: #1a1a1a;
+            border: 1px solid #2a2a2a;
+            border-radius: 5px;
+            padding: 15px;
+            overflow: hidden;
         }
 
-        .timer-section {
-            background: #f8f9fa;
-            border-radius: 15px;
-            padding: 25px;
-            margin-bottom: 25px;
-            text-align: center;
-            border: 3px solid transparent;
-            transition: all 0.2s ease;
+        .timeline-header {
+            display: flex;
+            gap: 10px;
+            align-items: flex-start;
+            min-height: 100px;
         }
 
-        .timer-section.active {
-            background: #667eea;
-            border-color: #667eea;
+        .info-panel {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            width: 140px;
+            padding-right: 15px;
+            border-right: 1px solid #2a2a2a;
+            flex-shrink: 0;
         }
 
-        .timer-display {
-            font-size: 72px;
+        .info-row {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+        }
+
+        .info-label {
+            font-size: 10px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: #666;
+        }
+
+        .info-value {
+            font-size: 14px;
             font-weight: bold;
             color: #667eea;
             font-family: 'Courier New', monospace;
-            letter-spacing: 10px;
-            transition: color 0.2s ease;
         }
 
-        .timer-section.active .timer-display {
-            color: white;
-        }
-
-        .timer-label {
-            color: #666;
-            font-size: 12px;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            margin-top: 10px;
-        }
-
-        .timer-section.active .timer-label {
-            color: rgba(255, 255, 255, 0.8);
-        }
-
-        .display-section {
-            background: #f8f9fa;
-            border-radius: 15px;
-            padding: 25px;
-            margin-bottom: 30px;
-            text-align: center;
-        }
-
-        .bpm-display {
-            font-size: 48px;
-            font-weight: bold;
-            color: #667eea;
-            margin-bottom: 10px;
-        }
-
-        .bpm-label {
-            color: #666;
-            font-size: 14px;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            margin-bottom: 20px;
-        }
-
-        .frames-info {
-            background: white;
-            border-radius: 10px;
-            padding: 15px;
-            margin-top: 15px;
-        }
-
-        .frame-row {
+        .timeline-ruler-wrapper {
+            flex: 1;
             display: flex;
-            justify-content: space-between;
+            flex-direction: column;
+            gap: 5px;
+            overflow-x: auto;
+            overflow-y: hidden;
+        }
+
+        .timeline-ruler {
+            display: flex;
+            gap: 0px;
+            align-items: flex-end;
+            padding: 0 5px;
+            min-width: min-content;
+            height: 60px;
+            background: #222;
+            border-radius: 3px;
+            border: 1px solid #2a2a2a;
+            position: relative;
+        }
+
+        .frame-marker {
+            position: relative;
+            display: flex;
+            flex-direction: column;
             align-items: center;
-            padding: 8px 0;
-            border-bottom: 1px solid #eee;
+            gap: 2px;
+            width: 25px;
+            height: 100%;
+            flex-shrink: 0;
         }
 
-        .frame-row:last-child {
-            border-bottom: none;
+        .frame-marker.major {
+            width: 30px;
         }
 
-        .frame-label {
+        .frame-tick {
+            width: 1px;
+            background: #404040;
+            flex-grow: 1;
+        }
+
+        .frame-marker.major .frame-tick {
+            background: #666;
+            width: 2px;
+        }
+
+        .frame-number {
+            font-size: 8px;
             color: #666;
-            font-size: 13px;
+            text-align: center;
+            height: 10px;
+            width: 100%;
+            line-height: 10px;
         }
 
-        .frame-value {
-            color: #667eea;
+        .beat-marker {
+            position: absolute;
+            bottom: 0;
+            width: 3px;
+            height: 40px;
+            background: #ff3333;
+            opacity: 0.95;
+            border-radius: 1px;
+            box-shadow: 0 0 10px rgba(255, 51, 51, 0.9), inset 0 0 4px rgba(255, 100, 100, 0.5);
+            z-index: 10;
+        }
+
+        .beat-marker::after {
+            content: '';
+            position: absolute;
+            top: -3px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 7px;
+            height: 7px;
+            background: #ff6666;
+            border-radius: 50%;
+            box-shadow: 0 0 6px rgba(255, 51, 51, 0.8);
+        }
+
+        .beat-number {
+            position: absolute;
+            bottom: -18px;
+            font-size: 9px;
+            color: #ff6666;
+            white-space: nowrap;
             font-weight: bold;
-            font-size: 16px;
+            left: 50%;
+            transform: translateX(-50%);
         }
 
-        .controls {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
+        .waveform-section {
+            display: none;
+            flex-direction: column;
+            gap: 8px;
+            background: #222;
+            padding: 12px;
+            border-radius: 3px;
+            border: 1px solid #2a2a2a;
+        }
+
+        .waveform-section.active {
+            display: flex;
+        }
+
+        .waveform-label {
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: #666;
+        }
+
+        .waveform-canvas {
+            border: 1px solid #2a2a2a;
+            border-radius: 3px;
+            background: #1a1a1a;
+            height: 80px;
+        }
+
+        .bottom-panel {
+            display: flex;
             gap: 15px;
-            margin-bottom: 20px;
+            margin-top: 20px;
+            padding: 15px;
+            background: #252525;
+            border-radius: 5px;
+            border: 1px solid #2a2a2a;
+            align-items: flex-end;
+        }
+
+        .stats-group {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+
+        .stats-label {
+            font-size: 10px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: #666;
+        }
+
+        .stats-value {
+            font-size: 18px;
+            font-weight: bold;
+            color: #667eea;
+            font-family: 'Courier New', monospace;
+        }
+
+        .separator {
+            width: 1px;
+            height: 40px;
+            background: #2a2a2a;
         }
 
         .tap-button {
-            grid-column: 1 / -1;
-            padding: 20px;
-            font-size: 20px;
-            font-weight: bold;
-            border: none;
-            border-radius: 15px;
+            padding: 10px 24px;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border: none;
             color: white;
+            font-weight: bold;
+            border-radius: 3px;
             cursor: pointer;
+            font-family: 'Monaco', monospace;
+            font-size: 12px;
             transition: all 0.2s ease;
-            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+            margin-left: auto;
         }
 
         .tap-button:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.6);
+            opacity: 0.9;
+            transform: translateY(-1px);
         }
 
         .tap-button:active {
             transform: translateY(0);
         }
 
-        .frame-rate-select {
-            padding: 10px;
-            font-size: 14px;
-            border: 2px solid #ddd;
-            border-radius: 10px;
-            background: white;
-            cursor: pointer;
-            transition: border-color 0.2s ease;
-        }
-
-        .frame-rate-select:focus {
-            outline: none;
-            border-color: #667eea;
-        }
-
-        .reset-button {
-            padding: 10px;
-            font-size: 14px;
-            border: 2px solid #ddd;
-            border-radius: 10px;
-            background: white;
-            color: #666;
-            cursor: pointer;
-            transition: all 0.2s ease;
-        }
-
-        .reset-button:hover {
-            border-color: #667eea;
-            color: #667eea;
-        }
-
-        .tap-count {
-            text-align: center;
-            color: #999;
-            font-size: 12px;
-            margin-top: 10px;
-        }
-
-        .status {
-            text-align: center;
-            font-size: 13px;
-            color: #999;
-            margin-top: 15px;
-        }
-
-        .status.ready {
-            color: #667eea;
-        }
-
         .privacy-notice {
             text-align: center;
-            color: #999;
-            font-size: 11px;
+            color: #666;
+            font-size: 10px;
             margin-top: 15px;
-            padding-top: 15px;
-            border-top: 1px solid #eee;
+            padding-top: 10px;
+            border-top: 1px solid #2a2a2a;
+        }
+
+        @media (max-width: 1200px) {
+            .controls-section {
+                grid-template-columns: 1fr 1fr;
+            }
+
+            .audio-section {
+                flex-direction: column;
+            }
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <h1>🎬 Frempo</h1>
-        <p class="subtitle">Beat tempo tool for animators</p>
+    <div class="header">
+        <h1>🎬 FREMPO</h1>
+        <div style="color: #666; font-size: 12px;">Beat Tempo Timeline</div>
+    </div>
 
-        <div class="audio-section" id="audioSection">
-            <label class="audio-upload-label">Upload Audio (Optional)</label>
-            <input type="file" id="audioInput" class="audio-input" accept="audio/*">
-            <div class="upload-area" id="uploadArea">
-                <div class="upload-icon">🎵</div>
-                <div class="upload-text">
-                    Click to upload or drag & drop<br>
-                    <strong>MP3, WAV, OGG, etc.</strong>
-                </div>
-            </div>
-            <div class="audio-filename" id="audioFilename"></div>
-            
-            <div class="waveform-container" id="waveformContainer">
-                <canvas id="waveformCanvas"></canvas>
-            </div>
-
-            <div class="audio-controls" id="audioControls" style="display: none;">
-                <button class="audio-btn play" id="playBtn">▶ Play</button>
-                <button class="audio-btn" id="pauseBtn">⏸ Pause</button>
-                <button class="audio-btn" id="clearAudioBtn">✕ Clear</button>
-            </div>
-        </div>
-
-        <div class="timer-section" id="timerSection">
-            <div class="timer-display" id="timerDisplay">0:00</div>
-            <div class="timer-label">Elapsed Time</div>
-        </div>
-
-        <div class="display-section">
-            <div class="bpm-display" id="bpmDisplay">0</div>
-            <div class="bpm-label">BPM</div>
-            
-            <div class="frames-info">
-                <div class="frame-row">
-                    <span class="frame-label">Frames per Beat:</span>
-                    <span class="frame-value" id="framesPerBeat">0</span>
-                </div>
-                <div class="frame-row">
-                    <span class="frame-label">Frames per Measure (4/4):</span>
-                    <span class="frame-value" id="framesPerMeasure">0</span>
-                </div>
-                <div class="frame-row">
-                    <span class="frame-label">Frames per Second:</span>
-                    <span class="frame-value" id="framesPerSecond">0</span>
-                </div>
-            </div>
-        </div>
-
-        <div class="controls">
-            <button class="tap-button" id="tapButton">TAP TEMPO</button>
-            
-            <select class="frame-rate-select" id="frameRate">
+    <div class="controls-section">
+        <div class="control-group">
+            <label class="control-label">Frame Rate</label>
+            <select id="frameRate" class="control-input">
                 <option value="12">12 FPS (Animation)</option>
                 <option value="24">24 FPS (Film)</option>
                 <option value="25">25 FPS (PAL)</option>
@@ -401,111 +435,127 @@
                 <option value="48">48 FPS</option>
                 <option value="50">50 FPS (PAL High)</option>
                 <option value="60">60 FPS (High Speed)</option>
-                <option value="120">120 FPS (Ultra High Speed)</option>
+                <option value="120">120 FPS (Ultra High)</option>
             </select>
-            
-            <button class="reset-button" id="resetButton">Reset</button>
         </div>
 
-        <div class="tap-count" id="tapCount">Tap the button to start</div>
-        <div class="status" id="status"></div>
+        <div class="control-group">
+            <label class="control-label">BPM</label>
+            <input id="bpmInput" type="number" class="control-input" value="0" readonly>
+        </div>
 
-        <div class="privacy-notice">
-            🔒 Audio is processed locally in your browser. No files are saved or sent to any server.
+        <div class="control-group">
+            <label class="control-label">Frames Per Beat</label>
+            <input id="framesPerBeatInput" type="number" class="control-input" value="0" readonly>
+        </div>
+
+        <div class="control-group">
+            <label class="control-label">Action</label>
+            <button id="resetButton" class="control-button">Reset Timeline</button>
         </div>
     </div>
 
-    <script>
-        const tapButton = document.getElementById('tapButton');
-        const resetButton = document.getElementById('resetButton');
-        const frameRateSelect = document.getElementById('frameRate');
-        const bpmDisplay = document.getElementById('bpmDisplay');
-        const framesPerBeatDisplay = document.getElementById('framesPerBeat');
-        const framesPerMeasureDisplay = document.getElementById('framesPerMeasure');
-        const framesPerSecondDisplay = document.getElementById('framesPerSecond');
-        const tapCountDisplay = document.getElementById('tapCount');
-        const statusDisplay = document.getElementById('status');
-        const timerDisplay = document.getElementById('timerDisplay');
-        const timerSection = document.getElementById('timerSection');
+    <div class="audio-section">
+        <div class="audio-upload-wrapper">
+            <input type="file" id="audioInput" class="audio-input" accept="audio/*">
+            <button id="uploadBtn" class="upload-btn">📁 Load Audio</button>
+            <div class="audio-filename" id="audioFilename">No audio loaded</div>
+        </div>
+        <div class="audio-controls">
+            <button id="playBtn" class="audio-btn">▶ Play</button>
+            <button id="pauseBtn" class="audio-btn">⏸ Pause</button>
+            <button id="clearAudioBtn" class="audio-btn">✕ Clear</button>
+        </div>
+    </div>
 
-        // Audio elements
+    <div class="waveform-section" id="waveformSection">
+        <div class="waveform-label">Waveform</div>
+        <canvas id="waveformCanvas" class="waveform-canvas"></canvas>
+    </div>
+
+    <div class="timeline-container">
+        <div class="timeline-header">
+            <div class="info-panel">
+                <div class="info-row">
+                    <div class="info-label">Current Frame</div>
+                    <div class="info-value" id="currentFrame">0</div>
+                </div>
+                <div class="info-row">
+                    <div class="info-label">Next Beat</div>
+                    <div class="info-value" id="nextBeatFrame">—</div>
+                </div>
+            </div>
+            <div class="timeline-ruler-wrapper">
+                <div class="timeline-ruler" id="timelineRuler"></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="bottom-panel">
+        <div class="stats-group">
+            <div class="stats-label">Taps Recorded</div>
+            <div class="stats-value" id="tapCount">0</div>
+        </div>
+        <div class="separator"></div>
+        <div class="stats-group">
+            <div class="stats-label">Frames Per Measure</div>
+            <div class="stats-value" id="framesPerMeasure">0</div>
+        </div>
+        <div class="separator"></div>
+        <div class="stats-group">
+            <div class="stats-label">Status</div>
+            <div class="stats-value" id="status" style="color: #666;">Ready</div>
+        </div>
+        <button id="tapButton" class="tap-button">TAP TEMPO</button>
+    </div>
+
+    <div class="privacy-notice">
+        🔒 All audio processing is done locally in your browser. No files are saved or sent anywhere.
+    </div>
+
+    <script>
+        // DOM Elements
+        const frameRateSelect = document.getElementById('frameRate');
+        const bpmInput = document.getElementById('bpmInput');
+        const framesPerBeatInput = document.getElementById('framesPerBeatInput');
+        const resetButton = document.getElementById('resetButton');
+        const tapButton = document.getElementById('tapButton');
+        const timelineRuler = document.getElementById('timelineRuler');
+        const currentFrameDisplay = document.getElementById('currentFrame');
+        const nextBeatFrameDisplay = document.getElementById('nextBeatFrame');
+        const tapCountDisplay = document.getElementById('tapCount');
+        const framesPerMeasureDisplay = document.getElementById('framesPerMeasure');
+        const statusDisplay = document.getElementById('status');
+
+        // Audio Elements
         const audioInput = document.getElementById('audioInput');
-        const uploadArea = document.getElementById('uploadArea');
-        const audioSection = document.getElementById('audioSection');
+        const uploadBtn = document.getElementById('uploadBtn');
         const audioFilename = document.getElementById('audioFilename');
-        const waveformContainer = document.getElementById('waveformContainer');
-        const waveformCanvas = document.getElementById('waveformCanvas');
-        const audioControls = document.getElementById('audioControls');
         const playBtn = document.getElementById('playBtn');
         const pauseBtn = document.getElementById('pauseBtn');
         const clearAudioBtn = document.getElementById('clearAudioBtn');
+        const waveformSection = document.getElementById('waveformSection');
+        const waveformCanvas = document.getElementById('waveformCanvas');
 
+        // State
         let tapTimes = [];
-        const TAP_TIMEOUT = 3000;
-        let tapTimeoutId = null;
         let frameRate = 30;
-        let startTime = null;
-        let timerIntervalId = null;
+        let currentFrame = 0;
+        let isRunning = false;
+        let runStartTime = null;
 
-        // Audio context
+        // Audio
         let audioContext = null;
         let audioBuffer = null;
         let audioSource = null;
         let analyser = null;
         let isPlaying = false;
-        let startPlayTime = 0;
 
-        // Initialize Web Audio API
+        // Initialize audio context
         function initAudioContext() {
             if (!audioContext) {
                 audioContext = new (window.AudioContext || window.webkitAudioContext)();
             }
-        }
-
-        // Format time as MM:SS
-        function formatTime(milliseconds) {
-            const totalSeconds = Math.floor(milliseconds / 1000);
-            const minutes = Math.floor(totalSeconds / 60);
-            const seconds = totalSeconds % 60;
-            return `${minutes}:${seconds.toString().padStart(2, '0')}`;
-        }
-
-        // Update timer display
-        function updateTimer() {
-            if (startTime === null) {
-                timerDisplay.textContent = '0:00';
-                return;
-            }
-
-            const elapsed = Date.now() - startTime;
-            timerDisplay.textContent = formatTime(elapsed);
-        }
-
-        // Start the timer
-        function startTimer() {
-            if (startTime === null) {
-                startTime = Date.now();
-                timerSection.classList.add('active');
-                
-                if (timerIntervalId) clearInterval(timerIntervalId);
-                timerIntervalId = setInterval(updateTimer, 100);
-            }
-        }
-
-        // Stop the timer
-        function stopTimer() {
-            if (timerIntervalId) {
-                clearInterval(timerIntervalId);
-                timerIntervalId = null;
-            }
-        }
-
-        // Reset the timer
-        function resetTimer() {
-            stopTimer();
-            startTime = null;
-            timerDisplay.textContent = '0:00';
-            timerSection.classList.remove('active');
         }
 
         // Calculate BPM from tap times
@@ -522,98 +572,155 @@
             return Math.max(20, Math.min(300, bpm));
         }
 
-        function updateDisplay() {
+        // Draw timeline with beat markers
+        function drawTimeline() {
+            timelineRuler.innerHTML = '';
             const bpm = calculateBPM();
-            bpmDisplay.textContent = bpm;
+            const framesPerBeat = bpm > 0 ? Math.round(frameRate / (bpm / 60)) : 0;
 
-            if (bpm > 0) {
-                const beatsPerSecond = bpm / 60;
-                const framesPerBeat = Math.round(frameRate / beatsPerSecond);
-                const framesPerMeasure = framesPerBeat * 4;
+            // Calculate timeline range based on taps
+            const maxFrames = Math.max(240, (tapTimes.length > 1 ? (tapTimes[tapTimes.length - 1] - tapTimes[0]) * frameRate / 1000 : 0) + 120);
 
-                framesPerBeatDisplay.textContent = framesPerBeat;
-                framesPerMeasureDisplay.textContent = framesPerMeasure;
-                framesPerSecondDisplay.textContent = frameRate;
-            } else {
-                framesPerBeatDisplay.textContent = '0';
-                framesPerMeasureDisplay.textContent = '0';
-                framesPerSecondDisplay.textContent = frameRate;
-            }
+            for (let f = 0; f < maxFrames; f += 1) {
+                const marker = document.createElement('div');
+                const isMajor = f % 10 === 0;
+                
+                marker.className = isMajor ? 'frame-marker major' : 'frame-marker';
 
-            if (tapTimes.length === 0) {
-                tapCountDisplay.textContent = 'Tap the button to start';
-                statusDisplay.textContent = '';
-            } else if (tapTimes.length === 1) {
-                tapCountDisplay.textContent = `${tapTimes.length} tap - keep tapping for accuracy`;
-                statusDisplay.textContent = '';
-            } else {
-                tapCountDisplay.textContent = `${tapTimes.length} taps`;
-                statusDisplay.classList.add('ready');
-                statusDisplay.textContent = `✓ Tempo locked at ${bpm} BPM`;
-            }
-        }
+                const tick = document.createElement('div');
+                tick.className = 'frame-tick';
 
-        function resetTapTimeout() {
-            clearTimeout(tapTimeoutId);
-            tapTimeoutId = setTimeout(() => {
-                if (tapTimes.length > 0 && tapTimes.length < 4) {
-                    if (tapTimes.length > 1) {
-                        // Lock in the tempo
+                const label = document.createElement('div');
+                label.className = 'frame-number';
+                if (isMajor) {
+                    label.textContent = f;
+                }
+
+                marker.appendChild(tick);
+                marker.appendChild(label);
+
+                // Add beat markers
+                if (bpm > 0 && framesPerBeat > 0 && tapTimes.length > 0) {
+                    // Calculate frame position for each beat
+                    const firstTapFrame = 0;
+                    for (let beatIndex = 0; beatIndex < 20; beatIndex++) {
+                        const beatFrame = firstTapFrame + (beatIndex * framesPerBeat);
+                        if (Math.abs(beatFrame - f) < 0.5) {
+                            const beatMarker = document.createElement('div');
+                            beatMarker.className = 'beat-marker';
+                            beatMarker.innerHTML = `<div class="beat-number">${beatIndex}</div>`;
+                            marker.appendChild(beatMarker);
+                            break;
+                        }
                     }
                 }
-            }, TAP_TIMEOUT);
+
+                timelineRuler.appendChild(marker);
+            }
         }
 
-        // Draw waveform
-        function drawWaveform(dataArray) {
-            const canvasWidth = waveformCanvas.offsetWidth;
-            const canvasHeight = 150;
-            waveformCanvas.width = canvasWidth;
-            waveformCanvas.height = canvasHeight;
-
-            const ctx = waveformCanvas.getContext('2d');
-            ctx.fillStyle = '#1a1a2e';
-            ctx.fillRect(0, 0, canvasWidth, canvasHeight);
-
-            ctx.strokeStyle = '#667eea';
-            ctx.lineWidth = 2;
-            ctx.beginPath();
-
-            const bufferLength = dataArray.length;
-            const sliceWidth = canvasWidth / bufferLength;
-            let x = 0;
-
-            for (let i = 0; i < bufferLength; i++) {
-                const v = dataArray[i] / 128.0;
-                const y = (v * canvasHeight) / 2;
-
-                if (i === 0) {
-                    ctx.moveTo(x, y);
-                } else {
-                    ctx.lineTo(x, y);
-                }
-
-                x += sliceWidth;
+        // Calculate next beat frame
+        function calculateNextBeatFrame() {
+            const bpm = calculateBPM();
+            if (bpm <= 0 || tapTimes.length === 0 || !isRunning) {
+                return '—';
             }
 
-            ctx.lineTo(canvasWidth, canvasHeight / 2);
-            ctx.stroke();
+            const framesPerBeat = Math.round(frameRate / (bpm / 60));
+            const elapsedMs = Date.now() - runStartTime;
+            const elapsedFrames = Math.floor(elapsedMs * frameRate / 1000);
+            
+            const nextBeat = Math.ceil(elapsedFrames / framesPerBeat) * framesPerBeat;
+            const distance = nextBeat - elapsedFrames;
+            
+            return distance > 0 ? nextBeat.toString() : '—';
         }
 
-        // Animate waveform during playback
-        function animateWaveform() {
-            if (!isPlaying) return;
+        // Update display
+        function updateDisplay() {
+            const bpm = calculateBPM();
+            bpmInput.value = bpm;
 
-            if (analyser) {
-                const dataArray = new Uint8Array(analyser.frequencyBinCount);
-                analyser.getByteFrequencyData(dataArray);
-                drawWaveform(dataArray);
+            if (bpm > 0) {
+                const framesPerBeat = Math.round(frameRate / (bpm / 60));
+                const framesPerMeasure = framesPerBeat * 4;
+
+                framesPerBeatInput.value = framesPerBeat;
+                framesPerMeasureDisplay.textContent = framesPerMeasure;
+            } else {
+                framesPerBeatInput.value = 0;
+                framesPerMeasureDisplay.textContent = 0;
             }
 
-            requestAnimationFrame(animateWaveform);
+            tapCountDisplay.textContent = tapTimes.length;
+            nextBeatFrameDisplay.textContent = calculateNextBeatFrame();
+
+            if (tapTimes.length === 0) {
+                statusDisplay.textContent = 'Ready';
+                statusDisplay.style.color = '#666';
+            } else if (tapTimes.length === 1) {
+                statusDisplay.textContent = 'Tap again...';
+                statusDisplay.style.color = '#888';
+            } else {
+                statusDisplay.textContent = '✓ Locked';
+                statusDisplay.style.color = '#67dd7f';
+            }
+
+            drawTimeline();
         }
 
-        // Audio file input handling
+        // Tap button handler
+        tapButton.addEventListener('click', () => {
+            const now = Date.now();
+
+            // Start running if not already
+            if (!isRunning) {
+                isRunning = true;
+                runStartTime = now;
+                currentFrame = 0;
+            }
+
+            // Reset if too much time has passed
+            if (tapTimes.length > 0 && now - tapTimes[tapTimes.length - 1] > 4000) {
+                tapTimes = [];
+            }
+
+            tapTimes.push(now);
+
+            // Keep only last 8 taps
+            if (tapTimes.length > 8) {
+                tapTimes.shift();
+            }
+
+            // Visual feedback
+            tapButton.style.transform = 'scale(0.95)';
+            setTimeout(() => {
+                tapButton.style.transform = '';
+            }, 100);
+
+            updateDisplay();
+        });
+
+        // Frame rate change
+        frameRateSelect.addEventListener('change', (e) => {
+            frameRate = parseInt(e.target.value);
+            updateDisplay();
+        });
+
+        // Reset button
+        resetButton.addEventListener('click', () => {
+            tapTimes = [];
+            currentFrame = 0;
+            isRunning = false;
+            currentFrameDisplay.textContent = '0';
+            updateDisplay();
+        });
+
+        // Audio file upload
+        uploadBtn.addEventListener('click', () => {
+            audioInput.click();
+        });
+
         audioInput.addEventListener('change', (e) => {
             const file = e.target.files[0];
             if (file) {
@@ -622,33 +729,22 @@
         });
 
         // Drag and drop
-        audioSection.addEventListener('dragover', (e) => {
+        document.addEventListener('dragover', (e) => {
             e.preventDefault();
-            audioSection.classList.add('dragover');
         });
 
-        audioSection.addEventListener('dragleave', () => {
-            audioSection.classList.remove('dragover');
-        });
-
-        audioSection.addEventListener('drop', (e) => {
+        document.addEventListener('drop', (e) => {
             e.preventDefault();
-            audioSection.classList.remove('dragover');
             const file = e.dataTransfer.files[0];
             if (file && file.type.startsWith('audio/')) {
                 loadAudio(file);
             }
         });
 
-        // Click to upload
-        uploadArea.addEventListener('click', () => {
-            audioInput.click();
-        });
-
-        // Load audio file
+        // Load audio
         function loadAudio(file) {
             initAudioContext();
-            audioFilename.textContent = `Loaded: ${file.name}`;
+            audioFilename.textContent = file.name;
 
             const reader = new FileReader();
             reader.onload = (event) => {
@@ -657,7 +753,7 @@
                     analyser = audioContext.createAnalyser();
                     analyser.fftSize = 256;
 
-                    // Draw initial waveform
+                    // Draw waveform
                     const rawData = new Float32Array(buffer.getChannelData(0));
                     const samples = rawData.length;
                     const blockSize = Math.floor(samples / 256);
@@ -672,14 +768,50 @@
                     }
 
                     drawWaveform(new Uint8Array(filteredData));
-                    waveformContainer.classList.add('active');
-                    audioControls.style.display = 'flex';
+                    waveformSection.classList.add('active');
                 }, (error) => {
                     console.error('Error decoding audio:', error);
-                    audioFilename.textContent = 'Error loading audio file';
+                    audioFilename.textContent = 'Error loading file';
                 });
             };
             reader.readAsArrayBuffer(file);
+        }
+
+        // Draw waveform
+        function drawWaveform(dataArray) {
+            const ctx = waveformCanvas.getContext('2d');
+            const width = waveformCanvas.offsetWidth;
+            const height = waveformCanvas.offsetHeight;
+
+            waveformCanvas.width = width;
+            waveformCanvas.height = height;
+
+            ctx.fillStyle = '#1a1a1a';
+            ctx.fillRect(0, 0, width, height);
+
+            ctx.strokeStyle = '#667eea';
+            ctx.lineWidth = 1;
+            ctx.beginPath();
+
+            const bufferLength = dataArray.length;
+            const sliceWidth = width / bufferLength;
+            let x = 0;
+
+            for (let i = 0; i < bufferLength; i++) {
+                const v = dataArray[i] / 128.0;
+                const y = (v * height) / 2;
+
+                if (i === 0) {
+                    ctx.moveTo(x, y);
+                } else {
+                    ctx.lineTo(x, y);
+                }
+
+                x += sliceWidth;
+            }
+
+            ctx.lineTo(width, height / 2);
+            ctx.stroke();
         }
 
         // Play button
@@ -689,22 +821,23 @@
             if (isPlaying) {
                 audioSource.stop();
                 isPlaying = false;
+                playBtn.classList.remove('active');
                 playBtn.textContent = '▶ Play';
                 return;
             }
 
-            startPlayTime = audioContext.currentTime;
             audioSource = audioContext.createBufferSource();
             audioSource.buffer = audioBuffer;
             audioSource.connect(analyser);
             analyser.connect(audioContext.destination);
             audioSource.start(0);
             isPlaying = true;
+            playBtn.classList.add('active');
             playBtn.textContent = '⏹ Stop';
-            animateWaveform();
 
             audioSource.onended = () => {
                 isPlaying = false;
+                playBtn.classList.remove('active');
                 playBtn.textContent = '▶ Play';
             };
         });
@@ -714,6 +847,7 @@
             if (isPlaying && audioSource) {
                 audioSource.stop();
                 isPlaying = false;
+                playBtn.classList.remove('active');
                 playBtn.textContent = '▶ Play';
             }
         });
@@ -723,67 +857,35 @@
             if (isPlaying && audioSource) {
                 audioSource.stop();
                 isPlaying = false;
+                playBtn.classList.remove('active');
                 playBtn.textContent = '▶ Play';
             }
             audioBuffer = null;
             audioSource = null;
             analyser = null;
-            audioFilename.textContent = '';
-            waveformContainer.classList.remove('active');
-            audioControls.style.display = 'none';
+            audioFilename.textContent = 'No audio loaded';
+            waveformSection.classList.remove('active');
             audioInput.value = '';
         });
 
-        // Tap button
-        tapButton.addEventListener('click', () => {
-            const now = Date.now();
-            
-            if (tapTimes.length === 0) {
-                startTimer();
-            }
-            
-            if (tapTimes.length > 0 && now - tapTimes[tapTimes.length - 1] > 4000) {
-                tapTimes = [];
-                resetTimer();
-                startTimer();
-            }
-
-            tapTimes.push(now);
-
-            if (tapTimes.length > 8) {
-                tapTimes.shift();
-            }
-
-            tapButton.style.transform = 'scale(0.95)';
-            setTimeout(() => {
-                tapButton.style.transform = '';
-            }, 100);
-
-            updateDisplay();
-            resetTapTimeout();
-        });
-
-        // Reset button
-        resetButton.addEventListener('click', () => {
-            tapTimes = [];
-            clearTimeout(tapTimeoutId);
-            bpmDisplay.textContent = '0';
-            framesPerBeatDisplay.textContent = '0';
-            framesPerMeasureDisplay.textContent = '0';
-            tapCountDisplay.textContent = 'Tap the button to start';
-            statusDisplay.classList.remove('ready');
-            statusDisplay.textContent = '';
-            resetTimer();
-        });
-
-        // Frame rate change
-        frameRateSelect.addEventListener('change', (e) => {
-            frameRate = parseInt(e.target.value);
-            updateDisplay();
-        });
-
         // Initialize
-        framesPerSecondDisplay.textContent = frameRate;
+        updateDisplay();
+
+        // Update display every frame
+        let lastFrameUpdate = 0;
+        function animationLoop() {
+            const now = Date.now();
+            if (now - lastFrameUpdate >= 16) {
+                if (isRunning) {
+                    currentFrame = Math.floor((Date.now() - runStartTime) * frameRate / 1000);
+                    currentFrameDisplay.textContent = currentFrame;
+                    nextBeatFrameDisplay.textContent = calculateNextBeatFrame();
+                }
+                lastFrameUpdate = now;
+            }
+            requestAnimationFrame(animationLoop);
+        }
+        animationLoop();
     </script>
 </body>
 </html>
