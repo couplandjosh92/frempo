@@ -95,6 +95,12 @@
             transform: translateY(0);
         }
 
+        .control-button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+
         .range-inputs {
             display: flex;
             gap: 10px;
@@ -207,6 +213,44 @@
             color: white;
         }
 
+        .mic-section {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .mic-btn {
+            padding: 10px 20px;
+            background: white;
+            border: 2px solid #e0e0e0;
+            color: #667eea;
+            font-size: 13px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.2s ease;
+        }
+
+        .mic-btn:hover {
+            border-color: #667eea;
+            background: #f8f9ff;
+        }
+
+        .mic-btn.active {
+            background: #667eea;
+            border-color: #667eea;
+            color: white;
+        }
+
+        .mic-status {
+            padding: 10px 15px;
+            background: #f8f9ff;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 13px;
+            color: #667eea;
+        }
+
         .instructions {
             background: white;
             border-radius: 12px;
@@ -250,6 +294,41 @@
             color: #333;
             font-size: 13px;
             line-height: 1.5;
+        }
+
+        .countdown-overlay {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+        }
+
+        .countdown-overlay.active {
+            display: flex;
+        }
+
+        .countdown-number {
+            font-size: 120px;
+            font-weight: bold;
+            color: white;
+            text-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+            animation: countdownPulse 0.6s ease-out;
+        }
+
+        @keyframes countdownPulse {
+            0% {
+                font-size: 120px;
+                opacity: 1;
+            }
+            100% {
+                font-size: 180px;
+                opacity: 0;
+            }
         }
 
         .waveform-section {
@@ -445,7 +524,13 @@
             background: #e0e0e0;
         }
 
-        .tap-button {
+        .control-buttons {
+            display: flex;
+            gap: 10px;
+            margin-left: auto;
+        }
+
+        .start-button {
             padding: 14px 40px;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             border: none;
@@ -455,18 +540,39 @@
             cursor: pointer;
             font-size: 16px;
             transition: all 0.2s ease;
-            margin-left: auto;
             box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
         }
 
-        .tap-button:hover {
+        .start-button:hover:not(:disabled) {
             opacity: 0.9;
             transform: translateY(-2px);
             box-shadow: 0 6px 20px rgba(102, 126, 234, 0.6);
         }
 
-        .tap-button:active {
+        .start-button:active:not(:disabled) {
             transform: translateY(0);
+        }
+
+        .start-button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .reset-button {
+            padding: 14px 40px;
+            background: white;
+            border: 2px solid #e0e0e0;
+            color: #667eea;
+            font-weight: bold;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: all 0.2s ease;
+        }
+
+        .reset-button:hover {
+            border-color: #667eea;
+            background: #f8f9ff;
         }
 
         .privacy-notice {
@@ -474,6 +580,17 @@
             color: rgba(255, 255, 255, 0.8);
             font-size: 12px;
             margin-top: 20px;
+        }
+
+        .spacebar-hint {
+            text-align: center;
+            color: rgba(255, 255, 255, 0.9);
+            font-size: 14px;
+            margin-bottom: 20px;
+            font-weight: 600;
+            padding: 15px;
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 8px;
         }
 
         @media (max-width: 768px) {
@@ -494,14 +611,22 @@
                 align-items: stretch;
             }
 
-            .tap-button {
+            .control-buttons {
                 margin-left: 0;
                 width: 100%;
+            }
+
+            .start-button, .reset-button {
+                flex: 1;
             }
         }
     </style>
 </head>
 <body>
+    <div class="spacebar-hint">
+        Press SPACEBAR to start the countdown, then tap SPACEBAR or click TAP to mark beats
+    </div>
+
     <div class="header">
         <h1>🎬 FREMPO</h1>
         <p style="color: white; font-size: 16px; margin-top: 5px;">Beat Tempo Timeline for Animators</p>
@@ -521,16 +646,6 @@
                     <option value="60">60 FPS (High Speed)</option>
                     <option value="120">120 FPS (Ultra High)</option>
                 </select>
-            </div>
-
-            <div class="control-group">
-                <label class="control-label">BPM</label>
-                <input id="bpmInput" type="number" class="control-input" value="0" readonly>
-            </div>
-
-            <div class="control-group">
-                <label class="control-label">Frames Per Beat</label>
-                <input id="framesPerBeatInput" type="number" class="control-input" value="0" readonly>
             </div>
 
             <div class="control-group">
@@ -554,7 +669,7 @@
                 </div>
             </div>
 
-            <div>
+            <div style="margin-bottom: 15px;">
                 <label class="control-label" style="display: block; margin-bottom: 10px;">Audio</label>
                 <div class="audio-section">
                     <div class="audio-upload-wrapper">
@@ -569,6 +684,14 @@
                     </div>
                 </div>
             </div>
+
+            <div>
+                <label class="control-label" style="display: block; margin-bottom: 10px;">Microphone Beat Detection</label>
+                <div class="mic-section">
+                    <button id="micBtn" class="mic-btn">🎤 Enable Mic</button>
+                    <div class="mic-status" id="micStatus">Mic disabled</div>
+                </div>
+            </div>
         </div>
     </div>
 
@@ -577,27 +700,28 @@
         <div class="instructions-list">
             <div class="instruction-item">
                 <div class="instruction-number">1</div>
-                <div class="instruction-text">Set your frame rate, frame range, and optionally load audio</div>
+                <div class="instruction-text">Set your frame rate and frame range</div>
             </div>
             <div class="instruction-item">
                 <div class="instruction-number">2</div>
-                <div class="instruction-text">Click TAP TEMPO to start the timeline and establish your beat</div>
+                <div class="instruction-text">Press SPACEBAR to start the 3-2-1 countdown</div>
             </div>
             <div class="instruction-item">
                 <div class="instruction-number">3</div>
-                <div class="instruction-text">Continue tapping at regular intervals to lock in the tempo</div>
+                <div class="instruction-text">Timeline will automatically start counting frames</div>
             </div>
             <div class="instruction-item">
                 <div class="instruction-number">4</div>
-                <div class="instruction-text">Red markers will appear on the timeline showing where each beat lands</div>
+                <div class="instruction-text">Press SPACEBAR or click TAP to mark beats on the timeline</div>
             </div>
             <div class="instruction-item">
                 <div class="instruction-number">5</div>
-                <div class="instruction-text">Click TAP TEMPO again to pause/stop the timeline</div>
+                <div class="instruction-number">5</div>
+                <div class="instruction-text">Red marks appear on each frame where you tapped</div>
             </div>
             <div class="instruction-item">
                 <div class="instruction-number">6</div>
-                <div class="instruction-text">Click Reset to clear everything and start over</div>
+                <div class="instruction-text">Timeline stops automatically at the end of the frame range</div>
             </div>
         </div>
     </div>
@@ -616,12 +740,12 @@
                 <div class="info-value" id="currentFrame">0</div>
             </div>
             <div class="info-item">
-                <div class="info-label">Frames Per Measure</div>
-                <div class="info-value" id="framesPerMeasure">0</div>
+                <div class="info-label">Total Beats Marked</div>
+                <div class="info-value" id="tapCount">0</div>
             </div>
             <div class="info-item">
                 <div class="info-label">Status</div>
-                <div class="info-value" id="status" style="color: #999; font-size: 18px;">Stopped</div>
+                <div class="info-value" id="status" style="color: #999; font-size: 18px;">Ready</div>
             </div>
         </div>
 
@@ -632,15 +756,23 @@
 
     <div class="bottom-panel">
         <div class="stats-group">
-            <div class="stats-label">Taps Recorded</div>
-            <div class="stats-value" id="tapCount">0</div>
+            <div class="stats-label">Beats Marked</div>
+            <div class="stats-value" id="beatCount">0</div>
         </div>
         <div class="separator"></div>
         <div class="stats-group">
-            <div class="stats-label">Next Beat Frame</div>
-            <div class="stats-value" id="nextBeatFrame">—</div>
+            <div class="stats-label">Frame Range</div>
+            <div class="stats-value"><span id="displayRangeStart">0</span>-<span id="displayRangeEnd">100</span></div>
         </div>
-        <button id="tapButton" class="tap-button">TAP TEMPO</button>
+        <div class="control-buttons">
+            <button id="startButton" class="start-button">Start (Spacebar)</button>
+            <button id="tapButton" class="start-button" style="background: linear-gradient(135deg, #ff6b6b 0%, #ee5a52 100%);">TAP BEAT</button>
+            <button id="resetBtn" class="reset-button">Reset</button>
+        </div>
+    </div>
+
+    <div class="countdown-overlay" id="countdownOverlay">
+        <div class="countdown-number" id="countdownNumber">3</div>
     </div>
 
     <div class="privacy-notice">
@@ -650,18 +782,21 @@
     <script>
         // DOM Elements
         const frameRateSelect = document.getElementById('frameRate');
-        const bpmInput = document.getElementById('bpmInput');
-        const framesPerBeatInput = document.getElementById('framesPerBeatInput');
         const resetButton = document.getElementById('resetButton');
+        const startButton = document.getElementById('startButton');
         const tapButton = document.getElementById('tapButton');
+        const resetBtn = document.getElementById('resetBtn');
         const rangeStartInput = document.getElementById('rangeStart');
         const rangeEndInput = document.getElementById('rangeEnd');
+        const displayRangeStart = document.getElementById('displayRangeStart');
+        const displayRangeEnd = document.getElementById('displayRangeEnd');
         const timelineRuler = document.getElementById('timelineRuler');
         const currentFrameDisplay = document.getElementById('currentFrame');
         const tapCountDisplay = document.getElementById('tapCount');
-        const framesPerMeasureDisplay = document.getElementById('framesPerMeasure');
+        const beatCountDisplay = document.getElementById('beatCount');
         const statusDisplay = document.getElementById('status');
-        const nextBeatFrameDisplay = document.getElementById('nextBeatFrame');
+        const countdownOverlay = document.getElementById('countdownOverlay');
+        const countdownNumber = document.getElementById('countdownNumber');
 
         // Audio Elements
         const audioInput = document.getElementById('audioInput');
@@ -673,12 +808,17 @@
         const waveformSection = document.getElementById('waveformSection');
         const waveformCanvas = document.getElementById('waveformCanvas');
 
+        // Mic Elements
+        const micBtn = document.getElementById('micBtn');
+        const micStatus = document.getElementById('micStatus');
+
         // State
-        let tapTimes = [];
+        let beatMarkers = []; // Array of frame numbers where beats were marked
         let frameRate = 30;
         let currentFrame = 0;
         let isRunning = false;
         let runStartTime = null;
+        let countdownActive = false;
 
         // Audio
         let audioContext = null;
@@ -687,6 +827,11 @@
         let analyser = null;
         let isPlaying = false;
 
+        // Mic
+        let micStream = null;
+        let micActive = false;
+        let audioProcessor = null;
+
         // Initialize audio context
         function initAudioContext() {
             if (!audioContext) {
@@ -694,25 +839,29 @@
             }
         }
 
-        // Calculate BPM from tap times
-        function calculateBPM() {
-            if (tapTimes.length < 2) return 0;
-
-            const intervals = [];
-            for (let i = 1; i < tapTimes.length; i++) {
-                intervals.push(tapTimes[i] - tapTimes[i - 1]);
+        // Countdown sequence
+        async function startCountdown() {
+            countdownActive = true;
+            countdownOverlay.classList.add('active');
+            
+            for (let i = 3; i > 0; i--) {
+                countdownNumber.textContent = i;
+                await new Promise(resolve => setTimeout(resolve, 1000));
             }
-
-            const averageInterval = intervals.reduce((a, b) => a + b) / intervals.length;
-            const bpm = Math.round(60000 / averageInterval);
-            return Math.max(20, Math.min(300, bpm));
+            
+            countdownOverlay.classList.remove('active');
+            countdownActive = false;
+            
+            // Start timeline
+            isRunning = true;
+            runStartTime = Date.now();
+            beatMarkers = [];
+            updateDisplay();
         }
 
         // Draw timeline with beat markers
         function drawTimeline() {
             timelineRuler.innerHTML = '';
-            const bpm = calculateBPM();
-            const framesPerBeat = bpm > 0 ? Math.round(frameRate / (bpm / 60)) : 0;
             const rangeStart = parseInt(rangeStartInput.value) || 0;
             const rangeEnd = parseInt(rangeEndInput.value) || 100;
 
@@ -735,127 +884,102 @@
                 marker.appendChild(label);
 
                 // Add beat markers
-                if (bpm > 0 && framesPerBeat > 0 && tapTimes.length > 0) {
-                    for (let beatIndex = 0; beatIndex < 50; beatIndex++) {
-                        const beatFrame = beatIndex * framesPerBeat;
-                        if (Math.abs(beatFrame - f) < 0.5 && beatFrame >= rangeStart && beatFrame <= rangeEnd) {
-                            const beatMarker = document.createElement('div');
-                            beatMarker.className = 'beat-marker';
-                            marker.appendChild(beatMarker);
-                            break;
-                        }
-                    }
+                if (beatMarkers.includes(f)) {
+                    const beatMarker = document.createElement('div');
+                    beatMarker.className = 'beat-marker';
+                    marker.appendChild(beatMarker);
                 }
 
                 timelineRuler.appendChild(marker);
             }
         }
 
-        // Calculate next beat frame
-        function calculateNextBeatFrame() {
-            const bpm = calculateBPM();
-            if (bpm <= 0 || tapTimes.length === 0 || !isRunning) {
-                return '—';
-            }
-
-            const framesPerBeat = Math.round(frameRate / (bpm / 60));
-            const nextBeat = Math.ceil(currentFrame / framesPerBeat) * framesPerBeat;
-            
-            return nextBeat.toString();
-        }
-
         // Update display
         function updateDisplay() {
-            const bpm = calculateBPM();
-            bpmInput.value = bpm;
-
-            if (bpm > 0) {
-                const framesPerBeat = Math.round(frameRate / (bpm / 60));
-                const framesPerMeasure = framesPerBeat * 4;
-
-                framesPerBeatInput.value = framesPerBeat;
-                framesPerMeasureDisplay.textContent = framesPerMeasure;
-            } else {
-                framesPerBeatInput.value = 0;
-                framesPerMeasureDisplay.textContent = 0;
-            }
-
-            tapCountDisplay.textContent = tapTimes.length;
-            nextBeatFrameDisplay.textContent = calculateNextBeatFrame();
+            tapCountDisplay.textContent = beatMarkers.length;
+            beatCountDisplay.textContent = beatMarkers.length;
+            displayRangeStart.textContent = rangeStartInput.value || 0;
+            displayRangeEnd.textContent = rangeEndInput.value || 100;
 
             if (!isRunning) {
-                statusDisplay.textContent = 'Stopped';
+                statusDisplay.textContent = 'Ready';
                 statusDisplay.style.color = '#999';
-            } else if (tapTimes.length === 0) {
-                statusDisplay.textContent = 'Running';
-                statusDisplay.style.color = '#667eea';
-            } else if (tapTimes.length === 1) {
-                statusDisplay.textContent = 'Tapping...';
-                statusDisplay.style.color = '#ff9800';
             } else {
-                statusDisplay.textContent = '✓ Locked';
+                statusDisplay.textContent = 'Running';
                 statusDisplay.style.color = '#4caf50';
             }
 
             drawTimeline();
         }
 
-        // Tap button handler
-        tapButton.addEventListener('click', () => {
-            const now = Date.now();
+        // Mark beat on current frame
+        function markBeat() {
+            if (!isRunning || countdownActive) return;
 
-            // Toggle running state
-            if (!isRunning) {
-                // Start
-                isRunning = true;
-                runStartTime = now;
-                currentFrame = 0;
-                tapTimes = [];
-                tapButton.textContent = '⏸ PAUSE TIMELINE';
-            } else {
-                // Stop
-                isRunning = false;
-                tapButton.textContent = 'TAP TEMPO';
-            }
+            const rangeStart = parseInt(rangeStartInput.value) || 0;
+            const rangeEnd = parseInt(rangeEndInput.value) || 100;
 
-            // Record tap if running
-            if (isRunning) {
-                tapTimes.push(now);
-
-                // Keep only last 8 taps
-                if (tapTimes.length > 8) {
-                    tapTimes.shift();
+            if (currentFrame >= rangeStart && currentFrame <= rangeEnd) {
+                if (!beatMarkers.includes(currentFrame)) {
+                    beatMarkers.push(currentFrame);
+                    beatMarkers.sort((a, b) => a - b);
                 }
-
-                // Visual feedback
-                tapButton.style.transform = 'scale(0.95)';
-                setTimeout(() => {
-                    tapButton.style.transform = '';
-                }, 100);
             }
 
             updateDisplay();
+        }
+
+        // Start button
+        startButton.addEventListener('click', () => {
+            if (!isRunning && !countdownActive) {
+                startCountdown();
+            }
+        });
+
+        // Tap button
+        tapButton.addEventListener('click', () => {
+            markBeat();
+        });
+
+        // Spacebar handling
+        document.addEventListener('keydown', (e) => {
+            if (e.code === 'Space') {
+                e.preventDefault();
+                
+                if (!isRunning && !countdownActive) {
+                    startCountdown();
+                } else if (isRunning && !countdownActive) {
+                    markBeat();
+                }
+            }
         });
 
         // Frame rate change
         frameRateSelect.addEventListener('change', (e) => {
             frameRate = parseInt(e.target.value);
-            updateDisplay();
         });
 
         // Range change
-        rangeStartInput.addEventListener('change', () => drawTimeline());
-        rangeEndInput.addEventListener('change', () => drawTimeline());
-
-        // Reset button
-        resetButton.addEventListener('click', () => {
-            tapTimes = [];
-            currentFrame = 0;
-            isRunning = false;
-            currentFrameDisplay.textContent = '0';
-            tapButton.textContent = 'TAP TEMPO';
+        rangeStartInput.addEventListener('change', () => {
             updateDisplay();
         });
+        
+        rangeEndInput.addEventListener('change', () => {
+            updateDisplay();
+        });
+
+        // Reset button
+        resetButton.addEventListener('click', reset);
+        resetBtn.addEventListener('click', reset);
+
+        function reset() {
+            isRunning = false;
+            beatMarkers = [];
+            currentFrame = 0;
+            currentFrameDisplay.textContent = '0';
+            startButton.textContent = 'Start (Spacebar)';
+            updateDisplay();
+        }
 
         // Audio file upload
         uploadBtn.addEventListener('click', () => {
@@ -1009,18 +1133,79 @@
             audioInput.value = '';
         });
 
+        // Microphone beat detection
+        micBtn.addEventListener('click', async () => {
+            if (!micActive) {
+                try {
+                    initAudioContext();
+                    micStream = await navigator.mediaDevices.getUserMedia({ audio: true });
+                    const micSource = audioContext.createMediaStreamSource(micStream);
+                    analyser = audioContext.createAnalyser();
+                    analyser.fftSize = 2048;
+                    micSource.connect(analyser);
+
+                    micActive = true;
+                    micBtn.classList.add('active');
+                    micStatus.textContent = 'Mic enabled - speak/snap to mark beats';
+                    
+                    detectMicBeats();
+                } catch (error) {
+                    console.error('Microphone error:', error);
+                    micStatus.textContent = 'Microphone access denied';
+                }
+            } else {
+                // Disable mic
+                if (micStream) {
+                    micStream.getTracks().forEach(track => track.stop());
+                }
+                micActive = false;
+                micBtn.classList.remove('active');
+                micStatus.textContent = 'Mic disabled';
+            }
+        });
+
+        // Detect beats from microphone
+        function detectMicBeats() {
+            if (!micActive || !analyser) return;
+
+            const dataArray = new Uint8Array(analyser.frequencyBinCount);
+            analyser.getByteFrequencyData(dataArray);
+
+            // Simple beat detection: if average frequency is high, it's a beat
+            let sum = 0;
+            for (let i = 0; i < dataArray.length; i++) {
+                sum += dataArray[i];
+            }
+            const average = sum / dataArray.length;
+
+            // If sound is loud enough, mark it as a beat
+            if (average > 50 && isRunning) {
+                markBeat();
+            }
+
+            requestAnimationFrame(detectMicBeats);
+        }
+
         // Initialize
         updateDisplay();
 
-        // Update display every frame
+        // Main animation loop
         let lastFrameUpdate = 0;
         function animationLoop() {
             const now = Date.now();
             if (now - lastFrameUpdate >= 16) {
                 if (isRunning) {
+                    const rangeEnd = parseInt(rangeEndInput.value) || 100;
                     currentFrame = Math.floor((Date.now() - runStartTime) * frameRate / 1000);
+                    
+                    // Stop at end of range
+                    if (currentFrame > rangeEnd) {
+                        isRunning = false;
+                        statusDisplay.textContent = 'Finished';
+                        statusDisplay.style.color = '#4caf50';
+                    }
+                    
                     currentFrameDisplay.textContent = currentFrame;
-                    nextBeatFrameDisplay.textContent = calculateNextBeatFrame();
                 }
                 lastFrameUpdate = now;
             }
