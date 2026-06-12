@@ -331,6 +331,14 @@
             filter: drop-shadow(0 4px 20px rgba(255, 107, 107, 0.4));
         }
 
+        .countdown-ready {
+            font-size: 60px;
+            font-weight: 700;
+            color: white;
+            animation: countdownPulse 0.6s ease-out;
+            filter: drop-shadow(0 4px 20px rgba(255, 255, 255, 0.4));
+        }
+
         @keyframes countdownPulse {
             0% {
                 font-size: 120px;
@@ -877,7 +885,7 @@
     </div>
 
     <div class="countdown-overlay" id="countdownOverlay">
-        <div class="countdown-number" id="countdownNumber">3</div>
+        <div id="countdownNumber"></div>
     </div>
 
     <div class="privacy-notice">
@@ -953,6 +961,13 @@
             countdownActive = true;
             countdownOverlay.classList.add('active');
             
+            // Show "Ready" first
+            countdownNumber.textContent = 'Ready';
+            countdownNumber.className = 'countdown-ready';
+            await new Promise(resolve => setTimeout(resolve, 1000));
+            
+            // Show 3, 2, 1
+            countdownNumber.className = 'countdown-number';
             for (let i = 3; i > 0; i--) {
                 countdownNumber.textContent = i;
                 await new Promise(resolve => setTimeout(resolve, 1000));
