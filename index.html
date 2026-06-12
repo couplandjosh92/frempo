@@ -12,99 +12,133 @@
         }
 
         body {
-            font-family: 'Monaco', 'Courier New', monospace;
-            background: #1a1a1a;
-            color: #e0e0e0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             min-height: 100vh;
             display: flex;
             flex-direction: column;
-            padding: 20px;
+            padding: 30px;
         }
 
         .header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 20px;
-            padding: 15px;
-            background: #252525;
-            border-radius: 5px;
-            border-left: 4px solid #667eea;
+            text-align: center;
+            margin-bottom: 30px;
         }
 
         h1 {
-            font-size: 24px;
-            color: #667eea;
-            margin: 0;
+            font-size: 36px;
+            color: white;
+            margin-bottom: 10px;
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
         }
 
         .controls-section {
+            background: white;
+            border-radius: 12px;
+            padding: 25px;
+            margin-bottom: 25px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+        }
+
+        .controls-grid {
             display: grid;
-            grid-template-columns: 1fr 1fr 1fr 1fr;
-            gap: 15px;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 20px;
             margin-bottom: 20px;
         }
 
         .control-group {
             display: flex;
             flex-direction: column;
-            gap: 5px;
+            gap: 8px;
         }
 
         .control-label {
-            font-size: 11px;
+            font-size: 12px;
             text-transform: uppercase;
             letter-spacing: 1px;
-            color: #888;
+            color: #667eea;
+            font-weight: 600;
         }
 
         .control-input, .control-button {
-            padding: 8px 12px;
-            background: #2a2a2a;
-            border: 1px solid #404040;
-            color: #e0e0e0;
-            font-family: 'Monaco', monospace;
-            font-size: 12px;
-            border-radius: 3px;
+            padding: 10px 15px;
+            background: white;
+            border: 2px solid #e0e0e0;
+            color: #333;
+            font-family: 'Segoe UI', sans-serif;
+            font-size: 14px;
+            border-radius: 8px;
             cursor: pointer;
             transition: all 0.2s ease;
         }
 
-        .control-input:hover {
+        .control-input:hover, .control-input:focus {
             border-color: #667eea;
-        }
-
-        .control-input:focus {
             outline: none;
-            border-color: #667eea;
-            background: #2f2f2f;
         }
 
         .control-button {
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
             border: none;
-            font-weight: bold;
-            cursor: pointer;
+            font-weight: 600;
         }
 
         .control-button:hover {
             opacity: 0.9;
-            transform: translateY(-1px);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
         }
 
         .control-button:active {
             transform: translateY(0);
         }
 
+        .range-inputs {
+            display: flex;
+            gap: 10px;
+            align-items: flex-end;
+        }
+
+        .range-input-group {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+
+        .range-input-group label {
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: #667eea;
+            font-weight: 600;
+        }
+
+        .range-input-group input {
+            padding: 8px 12px;
+            border: 2px solid #e0e0e0;
+            border-radius: 6px;
+            font-size: 13px;
+            transition: border-color 0.2s ease;
+        }
+
+        .range-input-group input:hover, .range-input-group input:focus {
+            border-color: #667eea;
+            outline: none;
+        }
+
         .audio-section {
             display: flex;
             gap: 15px;
-            margin-bottom: 20px;
             align-items: center;
+            flex-wrap: wrap;
         }
 
         .audio-upload-wrapper {
             flex: 1;
+            min-width: 250px;
             display: flex;
             gap: 10px;
         }
@@ -114,52 +148,57 @@
         }
 
         .upload-btn {
-            padding: 8px 16px;
-            background: #2a2a2a;
-            border: 1px solid #404040;
-            color: #e0e0e0;
-            font-size: 12px;
-            border-radius: 3px;
+            padding: 10px 20px;
+            background: white;
+            border: 2px solid #e0e0e0;
+            color: #667eea;
+            font-size: 13px;
+            border-radius: 8px;
             cursor: pointer;
+            font-weight: 600;
             transition: all 0.2s ease;
+            white-space: nowrap;
         }
 
         .upload-btn:hover {
             border-color: #667eea;
+            background: #f8f9ff;
         }
 
         .audio-filename {
-            padding: 8px 12px;
-            background: #2a2a2a;
-            border: 1px solid #404040;
-            border-radius: 3px;
-            font-size: 12px;
-            color: #888;
+            padding: 10px 15px;
+            background: #f8f9ff;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 13px;
+            color: #667eea;
             flex: 1;
             overflow: hidden;
             text-overflow: ellipsis;
             white-space: nowrap;
+            min-width: 200px;
         }
 
         .audio-controls {
             display: flex;
-            gap: 5px;
+            gap: 8px;
         }
 
         .audio-btn {
-            padding: 6px 12px;
-            background: #2a2a2a;
-            border: 1px solid #404040;
-            color: #e0e0e0;
-            font-size: 11px;
-            border-radius: 3px;
+            padding: 8px 15px;
+            background: white;
+            border: 2px solid #e0e0e0;
+            color: #667eea;
+            font-size: 12px;
+            border-radius: 6px;
             cursor: pointer;
             transition: all 0.2s ease;
+            font-weight: 600;
         }
 
         .audio-btn:hover {
             border-color: #667eea;
-            color: #667eea;
+            background: #f8f9ff;
         }
 
         .audio-btn.active {
@@ -168,74 +207,144 @@
             color: white;
         }
 
+        .instructions {
+            background: white;
+            border-radius: 12px;
+            padding: 25px;
+            margin-bottom: 25px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+            border-left: 5px solid #667eea;
+        }
+
+        .instructions h3 {
+            color: #667eea;
+            margin-bottom: 15px;
+            font-size: 16px;
+        }
+
+        .instructions-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 15px;
+        }
+
+        .instruction-item {
+            display: flex;
+            gap: 12px;
+        }
+
+        .instruction-number {
+            background: #667eea;
+            color: white;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            font-weight: bold;
+        }
+
+        .instruction-text {
+            color: #333;
+            font-size: 13px;
+            line-height: 1.5;
+        }
+
+        .waveform-section {
+            display: none;
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 25px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+        }
+
+        .waveform-section.active {
+            display: block;
+        }
+
+        .waveform-label {
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: #667eea;
+            font-weight: 600;
+            margin-bottom: 15px;
+        }
+
+        .waveform-canvas {
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            background: #f8f9ff;
+            height: 100px;
+            width: 100%;
+        }
+
         .timeline-container {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-            background: #1a1a1a;
-            border: 1px solid #2a2a2a;
-            border-radius: 5px;
-            padding: 15px;
-            overflow: hidden;
+            background: white;
+            border-radius: 12px;
+            padding: 30px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+            margin-bottom: 25px;
         }
 
-        .timeline-header {
-            display: flex;
-            gap: 10px;
-            align-items: flex-start;
-            min-height: 100px;
+        .timeline-title {
+            text-align: center;
+            font-size: 16px;
+            color: #667eea;
+            font-weight: 600;
+            margin-bottom: 20px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
         }
 
-        .info-panel {
+        .timeline-info {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid #e0e0e0;
+            text-align: center;
+        }
+
+        .info-item {
             display: flex;
             flex-direction: column;
             gap: 8px;
-            width: 140px;
-            padding-right: 15px;
-            border-right: 1px solid #2a2a2a;
-            flex-shrink: 0;
-        }
-
-        .info-row {
-            display: flex;
-            flex-direction: column;
-            gap: 2px;
         }
 
         .info-label {
-            font-size: 10px;
+            font-size: 11px;
             text-transform: uppercase;
             letter-spacing: 1px;
-            color: #666;
+            color: #999;
         }
 
         .info-value {
-            font-size: 14px;
+            font-size: 28px;
             font-weight: bold;
             color: #667eea;
             font-family: 'Courier New', monospace;
         }
 
         .timeline-ruler-wrapper {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            gap: 5px;
             overflow-x: auto;
-            overflow-y: hidden;
+            background: #f8f9ff;
+            border-radius: 8px;
+            border: 2px solid #e0e0e0;
+            padding: 15px;
+            margin-bottom: 25px;
         }
 
         .timeline-ruler {
             display: flex;
             gap: 0px;
             align-items: flex-end;
-            padding: 0 5px;
             min-width: min-content;
-            height: 60px;
-            background: #222;
-            border-radius: 3px;
-            border: 1px solid #2a2a2a;
+            height: 80px;
             position: relative;
         }
 
@@ -245,153 +354,115 @@
             flex-direction: column;
             align-items: center;
             gap: 2px;
-            width: 25px;
+            width: 20px;
             height: 100%;
             flex-shrink: 0;
         }
 
         .frame-marker.major {
-            width: 30px;
+            width: 25px;
         }
 
         .frame-tick {
             width: 1px;
-            background: #404040;
+            background: #ddd;
             flex-grow: 1;
         }
 
         .frame-marker.major .frame-tick {
-            background: #666;
+            background: #667eea;
             width: 2px;
         }
 
         .frame-number {
-            font-size: 8px;
-            color: #666;
+            font-size: 9px;
+            color: #999;
             text-align: center;
-            height: 10px;
+            height: 12px;
             width: 100%;
-            line-height: 10px;
+            line-height: 12px;
         }
 
         .beat-marker {
             position: absolute;
             bottom: 0;
             width: 3px;
-            height: 40px;
+            height: 50px;
             background: #ff3333;
             opacity: 0.95;
-            border-radius: 1px;
-            box-shadow: 0 0 10px rgba(255, 51, 51, 0.9), inset 0 0 4px rgba(255, 100, 100, 0.5);
+            border-radius: 2px;
+            box-shadow: 0 0 10px rgba(255, 51, 51, 0.8);
             z-index: 10;
         }
 
         .beat-marker::after {
             content: '';
             position: absolute;
-            top: -3px;
+            top: -4px;
             left: 50%;
             transform: translateX(-50%);
-            width: 7px;
-            height: 7px;
+            width: 8px;
+            height: 8px;
             background: #ff6666;
             border-radius: 50%;
             box-shadow: 0 0 6px rgba(255, 51, 51, 0.8);
         }
 
-        .beat-number {
-            position: absolute;
-            bottom: -18px;
-            font-size: 9px;
-            color: #ff6666;
-            white-space: nowrap;
-            font-weight: bold;
-            left: 50%;
-            transform: translateX(-50%);
-        }
-
-        .waveform-section {
-            display: none;
-            flex-direction: column;
-            gap: 8px;
-            background: #222;
-            padding: 12px;
-            border-radius: 3px;
-            border: 1px solid #2a2a2a;
-        }
-
-        .waveform-section.active {
-            display: flex;
-        }
-
-        .waveform-label {
-            font-size: 11px;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            color: #666;
-        }
-
-        .waveform-canvas {
-            border: 1px solid #2a2a2a;
-            border-radius: 3px;
-            background: #1a1a1a;
-            height: 80px;
-        }
-
         .bottom-panel {
+            background: white;
+            border-radius: 12px;
+            padding: 25px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
             display: flex;
-            gap: 15px;
-            margin-top: 20px;
-            padding: 15px;
-            background: #252525;
-            border-radius: 5px;
-            border: 1px solid #2a2a2a;
+            gap: 20px;
             align-items: flex-end;
+            flex-wrap: wrap;
         }
 
         .stats-group {
             display: flex;
             flex-direction: column;
-            gap: 5px;
+            gap: 8px;
         }
 
         .stats-label {
-            font-size: 10px;
+            font-size: 11px;
             text-transform: uppercase;
             letter-spacing: 1px;
-            color: #666;
+            color: #999;
         }
 
         .stats-value {
-            font-size: 18px;
+            font-size: 24px;
             font-weight: bold;
             color: #667eea;
             font-family: 'Courier New', monospace;
         }
 
         .separator {
-            width: 1px;
-            height: 40px;
-            background: #2a2a2a;
+            width: 2px;
+            height: 50px;
+            background: #e0e0e0;
         }
 
         .tap-button {
-            padding: 10px 24px;
+            padding: 14px 40px;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             border: none;
             color: white;
             font-weight: bold;
-            border-radius: 3px;
+            border-radius: 8px;
             cursor: pointer;
-            font-family: 'Monaco', monospace;
-            font-size: 12px;
+            font-size: 16px;
             transition: all 0.2s ease;
             margin-left: auto;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
         }
 
         .tap-button:hover {
             opacity: 0.9;
-            transform: translateY(-1px);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.6);
         }
 
         .tap-button:active {
@@ -400,20 +471,32 @@
 
         .privacy-notice {
             text-align: center;
-            color: #666;
-            font-size: 10px;
-            margin-top: 15px;
-            padding-top: 10px;
-            border-top: 1px solid #2a2a2a;
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 12px;
+            margin-top: 20px;
         }
 
-        @media (max-width: 1200px) {
-            .controls-section {
-                grid-template-columns: 1fr 1fr;
+        @media (max-width: 768px) {
+            .controls-grid {
+                grid-template-columns: 1fr;
             }
 
-            .audio-section {
+            .instructions-list {
+                grid-template-columns: 1fr;
+            }
+
+            .timeline-info {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .bottom-panel {
                 flex-direction: column;
+                align-items: stretch;
+            }
+
+            .tap-button {
+                margin-left: 0;
+                width: 100%;
             }
         }
     </style>
@@ -421,50 +504,101 @@
 <body>
     <div class="header">
         <h1>🎬 FREMPO</h1>
-        <div style="color: #666; font-size: 12px;">Beat Tempo Timeline</div>
+        <p style="color: white; font-size: 16px; margin-top: 5px;">Beat Tempo Timeline for Animators</p>
     </div>
 
     <div class="controls-section">
-        <div class="control-group">
-            <label class="control-label">Frame Rate</label>
-            <select id="frameRate" class="control-input">
-                <option value="12">12 FPS (Animation)</option>
-                <option value="24">24 FPS (Film)</option>
-                <option value="25">25 FPS (PAL)</option>
-                <option value="30" selected>30 FPS (NTSC)</option>
-                <option value="48">48 FPS</option>
-                <option value="50">50 FPS (PAL High)</option>
-                <option value="60">60 FPS (High Speed)</option>
-                <option value="120">120 FPS (Ultra High)</option>
-            </select>
+        <div class="controls-grid">
+            <div class="control-group">
+                <label class="control-label">Frame Rate</label>
+                <select id="frameRate" class="control-input">
+                    <option value="12">12 FPS (Animation)</option>
+                    <option value="24">24 FPS (Film)</option>
+                    <option value="25">25 FPS (PAL)</option>
+                    <option value="30" selected>30 FPS (NTSC)</option>
+                    <option value="48">48 FPS</option>
+                    <option value="50">50 FPS (PAL High)</option>
+                    <option value="60">60 FPS (High Speed)</option>
+                    <option value="120">120 FPS (Ultra High)</option>
+                </select>
+            </div>
+
+            <div class="control-group">
+                <label class="control-label">BPM</label>
+                <input id="bpmInput" type="number" class="control-input" value="0" readonly>
+            </div>
+
+            <div class="control-group">
+                <label class="control-label">Frames Per Beat</label>
+                <input id="framesPerBeatInput" type="number" class="control-input" value="0" readonly>
+            </div>
+
+            <div class="control-group">
+                <label class="control-label">Action</label>
+                <button id="resetButton" class="control-button">Reset</button>
+            </div>
         </div>
 
-        <div class="control-group">
-            <label class="control-label">BPM</label>
-            <input id="bpmInput" type="number" class="control-input" value="0" readonly>
-        </div>
+        <div style="margin-top: 20px; padding-top: 20px; border-top: 2px solid #e0e0e0;">
+            <div style="margin-bottom: 15px;">
+                <label class="control-label" style="display: block; margin-bottom: 10px;">Frame Range</label>
+                <div class="range-inputs">
+                    <div class="range-input-group">
+                        <label>Start</label>
+                        <input id="rangeStart" type="number" value="0">
+                    </div>
+                    <div class="range-input-group">
+                        <label>End</label>
+                        <input id="rangeEnd" type="number" value="100">
+                    </div>
+                </div>
+            </div>
 
-        <div class="control-group">
-            <label class="control-label">Frames Per Beat</label>
-            <input id="framesPerBeatInput" type="number" class="control-input" value="0" readonly>
-        </div>
-
-        <div class="control-group">
-            <label class="control-label">Action</label>
-            <button id="resetButton" class="control-button">Reset Timeline</button>
+            <div>
+                <label class="control-label" style="display: block; margin-bottom: 10px;">Audio</label>
+                <div class="audio-section">
+                    <div class="audio-upload-wrapper">
+                        <input type="file" id="audioInput" class="audio-input" accept="audio/*">
+                        <button id="uploadBtn" class="upload-btn">📁 Load Audio</button>
+                        <div class="audio-filename" id="audioFilename">No audio loaded</div>
+                    </div>
+                    <div class="audio-controls">
+                        <button id="playBtn" class="audio-btn">▶ Play</button>
+                        <button id="pauseBtn" class="audio-btn">⏸ Pause</button>
+                        <button id="clearAudioBtn" class="audio-btn">✕ Clear</button>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 
-    <div class="audio-section">
-        <div class="audio-upload-wrapper">
-            <input type="file" id="audioInput" class="audio-input" accept="audio/*">
-            <button id="uploadBtn" class="upload-btn">📁 Load Audio</button>
-            <div class="audio-filename" id="audioFilename">No audio loaded</div>
-        </div>
-        <div class="audio-controls">
-            <button id="playBtn" class="audio-btn">▶ Play</button>
-            <button id="pauseBtn" class="audio-btn">⏸ Pause</button>
-            <button id="clearAudioBtn" class="audio-btn">✕ Clear</button>
+    <div class="instructions">
+        <h3>How to Use Frempo</h3>
+        <div class="instructions-list">
+            <div class="instruction-item">
+                <div class="instruction-number">1</div>
+                <div class="instruction-text">Set your frame rate, frame range, and optionally load audio</div>
+            </div>
+            <div class="instruction-item">
+                <div class="instruction-number">2</div>
+                <div class="instruction-text">Click TAP TEMPO to start the timeline and establish your beat</div>
+            </div>
+            <div class="instruction-item">
+                <div class="instruction-number">3</div>
+                <div class="instruction-text">Continue tapping at regular intervals to lock in the tempo</div>
+            </div>
+            <div class="instruction-item">
+                <div class="instruction-number">4</div>
+                <div class="instruction-text">Red markers will appear on the timeline showing where each beat lands</div>
+            </div>
+            <div class="instruction-item">
+                <div class="instruction-number">5</div>
+                <div class="instruction-text">Click TAP TEMPO again to pause/stop the timeline</div>
+            </div>
+            <div class="instruction-item">
+                <div class="instruction-number">6</div>
+                <div class="instruction-text">Click Reset to clear everything and start over</div>
+            </div>
         </div>
     </div>
 
@@ -474,20 +608,25 @@
     </div>
 
     <div class="timeline-container">
-        <div class="timeline-header">
-            <div class="info-panel">
-                <div class="info-row">
-                    <div class="info-label">Current Frame</div>
-                    <div class="info-value" id="currentFrame">0</div>
-                </div>
-                <div class="info-row">
-                    <div class="info-label">Next Beat</div>
-                    <div class="info-value" id="nextBeatFrame">—</div>
-                </div>
+        <div class="timeline-title">Timeline</div>
+        
+        <div class="timeline-info">
+            <div class="info-item">
+                <div class="info-label">Current Frame</div>
+                <div class="info-value" id="currentFrame">0</div>
             </div>
-            <div class="timeline-ruler-wrapper">
-                <div class="timeline-ruler" id="timelineRuler"></div>
+            <div class="info-item">
+                <div class="info-label">Frames Per Measure</div>
+                <div class="info-value" id="framesPerMeasure">0</div>
             </div>
+            <div class="info-item">
+                <div class="info-label">Status</div>
+                <div class="info-value" id="status" style="color: #999; font-size: 18px;">Stopped</div>
+            </div>
+        </div>
+
+        <div class="timeline-ruler-wrapper">
+            <div class="timeline-ruler" id="timelineRuler"></div>
         </div>
     </div>
 
@@ -498,13 +637,8 @@
         </div>
         <div class="separator"></div>
         <div class="stats-group">
-            <div class="stats-label">Frames Per Measure</div>
-            <div class="stats-value" id="framesPerMeasure">0</div>
-        </div>
-        <div class="separator"></div>
-        <div class="stats-group">
-            <div class="stats-label">Status</div>
-            <div class="stats-value" id="status" style="color: #666;">Ready</div>
+            <div class="stats-label">Next Beat Frame</div>
+            <div class="stats-value" id="nextBeatFrame">—</div>
         </div>
         <button id="tapButton" class="tap-button">TAP TEMPO</button>
     </div>
@@ -520,12 +654,14 @@
         const framesPerBeatInput = document.getElementById('framesPerBeatInput');
         const resetButton = document.getElementById('resetButton');
         const tapButton = document.getElementById('tapButton');
+        const rangeStartInput = document.getElementById('rangeStart');
+        const rangeEndInput = document.getElementById('rangeEnd');
         const timelineRuler = document.getElementById('timelineRuler');
         const currentFrameDisplay = document.getElementById('currentFrame');
-        const nextBeatFrameDisplay = document.getElementById('nextBeatFrame');
         const tapCountDisplay = document.getElementById('tapCount');
         const framesPerMeasureDisplay = document.getElementById('framesPerMeasure');
         const statusDisplay = document.getElementById('status');
+        const nextBeatFrameDisplay = document.getElementById('nextBeatFrame');
 
         // Audio Elements
         const audioInput = document.getElementById('audioInput');
@@ -577,13 +713,12 @@
             timelineRuler.innerHTML = '';
             const bpm = calculateBPM();
             const framesPerBeat = bpm > 0 ? Math.round(frameRate / (bpm / 60)) : 0;
+            const rangeStart = parseInt(rangeStartInput.value) || 0;
+            const rangeEnd = parseInt(rangeEndInput.value) || 100;
 
-            // Calculate timeline range based on taps
-            const maxFrames = Math.max(240, (tapTimes.length > 1 ? (tapTimes[tapTimes.length - 1] - tapTimes[0]) * frameRate / 1000 : 0) + 120);
-
-            for (let f = 0; f < maxFrames; f += 1) {
+            for (let f = rangeStart; f <= rangeEnd; f += 1) {
                 const marker = document.createElement('div');
-                const isMajor = f % 10 === 0;
+                const isMajor = (f - rangeStart) % 10 === 0;
                 
                 marker.className = isMajor ? 'frame-marker major' : 'frame-marker';
 
@@ -601,14 +736,11 @@
 
                 // Add beat markers
                 if (bpm > 0 && framesPerBeat > 0 && tapTimes.length > 0) {
-                    // Calculate frame position for each beat
-                    const firstTapFrame = 0;
-                    for (let beatIndex = 0; beatIndex < 20; beatIndex++) {
-                        const beatFrame = firstTapFrame + (beatIndex * framesPerBeat);
-                        if (Math.abs(beatFrame - f) < 0.5) {
+                    for (let beatIndex = 0; beatIndex < 50; beatIndex++) {
+                        const beatFrame = beatIndex * framesPerBeat;
+                        if (Math.abs(beatFrame - f) < 0.5 && beatFrame >= rangeStart && beatFrame <= rangeEnd) {
                             const beatMarker = document.createElement('div');
                             beatMarker.className = 'beat-marker';
-                            beatMarker.innerHTML = `<div class="beat-number">${beatIndex}</div>`;
                             marker.appendChild(beatMarker);
                             break;
                         }
@@ -627,13 +759,9 @@
             }
 
             const framesPerBeat = Math.round(frameRate / (bpm / 60));
-            const elapsedMs = Date.now() - runStartTime;
-            const elapsedFrames = Math.floor(elapsedMs * frameRate / 1000);
+            const nextBeat = Math.ceil(currentFrame / framesPerBeat) * framesPerBeat;
             
-            const nextBeat = Math.ceil(elapsedFrames / framesPerBeat) * framesPerBeat;
-            const distance = nextBeat - elapsedFrames;
-            
-            return distance > 0 ? nextBeat.toString() : '—';
+            return nextBeat.toString();
         }
 
         // Update display
@@ -655,15 +783,18 @@
             tapCountDisplay.textContent = tapTimes.length;
             nextBeatFrameDisplay.textContent = calculateNextBeatFrame();
 
-            if (tapTimes.length === 0) {
-                statusDisplay.textContent = 'Ready';
-                statusDisplay.style.color = '#666';
+            if (!isRunning) {
+                statusDisplay.textContent = 'Stopped';
+                statusDisplay.style.color = '#999';
+            } else if (tapTimes.length === 0) {
+                statusDisplay.textContent = 'Running';
+                statusDisplay.style.color = '#667eea';
             } else if (tapTimes.length === 1) {
-                statusDisplay.textContent = 'Tap again...';
-                statusDisplay.style.color = '#888';
+                statusDisplay.textContent = 'Tapping...';
+                statusDisplay.style.color = '#ff9800';
             } else {
                 statusDisplay.textContent = '✓ Locked';
-                statusDisplay.style.color = '#67dd7f';
+                statusDisplay.style.color = '#4caf50';
             }
 
             drawTimeline();
@@ -673,30 +804,35 @@
         tapButton.addEventListener('click', () => {
             const now = Date.now();
 
-            // Start running if not already
+            // Toggle running state
             if (!isRunning) {
+                // Start
                 isRunning = true;
                 runStartTime = now;
                 currentFrame = 0;
-            }
-
-            // Reset if too much time has passed
-            if (tapTimes.length > 0 && now - tapTimes[tapTimes.length - 1] > 4000) {
                 tapTimes = [];
+                tapButton.textContent = '⏸ PAUSE TIMELINE';
+            } else {
+                // Stop
+                isRunning = false;
+                tapButton.textContent = 'TAP TEMPO';
             }
 
-            tapTimes.push(now);
+            // Record tap if running
+            if (isRunning) {
+                tapTimes.push(now);
 
-            // Keep only last 8 taps
-            if (tapTimes.length > 8) {
-                tapTimes.shift();
+                // Keep only last 8 taps
+                if (tapTimes.length > 8) {
+                    tapTimes.shift();
+                }
+
+                // Visual feedback
+                tapButton.style.transform = 'scale(0.95)';
+                setTimeout(() => {
+                    tapButton.style.transform = '';
+                }, 100);
             }
-
-            // Visual feedback
-            tapButton.style.transform = 'scale(0.95)';
-            setTimeout(() => {
-                tapButton.style.transform = '';
-            }, 100);
 
             updateDisplay();
         });
@@ -707,12 +843,17 @@
             updateDisplay();
         });
 
+        // Range change
+        rangeStartInput.addEventListener('change', () => drawTimeline());
+        rangeEndInput.addEventListener('change', () => drawTimeline());
+
         // Reset button
         resetButton.addEventListener('click', () => {
             tapTimes = [];
             currentFrame = 0;
             isRunning = false;
             currentFrameDisplay.textContent = '0';
+            tapButton.textContent = 'TAP TEMPO';
             updateDisplay();
         });
 
@@ -786,11 +927,11 @@
             waveformCanvas.width = width;
             waveformCanvas.height = height;
 
-            ctx.fillStyle = '#1a1a1a';
+            ctx.fillStyle = '#f8f9ff';
             ctx.fillRect(0, 0, width, height);
 
             ctx.strokeStyle = '#667eea';
-            ctx.lineWidth = 1;
+            ctx.lineWidth = 2;
             ctx.beginPath();
 
             const bufferLength = dataArray.length;
