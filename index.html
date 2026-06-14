@@ -138,125 +138,6 @@
             outline: none;
         }
 
-        .audio-section {
-            display: flex;
-            gap: 15px;
-            align-items: center;
-            flex-wrap: wrap;
-        }
-
-        .audio-upload-wrapper {
-            flex: 1;
-            min-width: 250px;
-            display: flex;
-            gap: 10px;
-        }
-
-        .audio-input {
-            display: none;
-        }
-
-        .upload-btn {
-            padding: 10px 20px;
-            background: white;
-            border: 2px solid #e0e0e0;
-            color: #667eea;
-            font-size: 13px;
-            border-radius: 8px;
-            cursor: pointer;
-            font-weight: 600;
-            transition: all 0.2s ease;
-            white-space: nowrap;
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-        }
-
-        .upload-btn:hover {
-            border-color: #667eea;
-            background: #f8f9ff;
-        }
-
-        .audio-filename {
-            padding: 10px 15px;
-            background: #f8f9ff;
-            border: 2px solid #e0e0e0;
-            border-radius: 8px;
-            font-size: 13px;
-            color: #667eea;
-            flex: 1;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            white-space: nowrap;
-            min-width: 200px;
-        }
-
-        .audio-controls {
-            display: flex;
-            gap: 8px;
-        }
-
-        .audio-btn {
-            padding: 8px 15px;
-            background: white;
-            border: 2px solid #e0e0e0;
-            color: #667eea;
-            font-size: 12px;
-            border-radius: 6px;
-            cursor: pointer;
-            transition: all 0.2s ease;
-            font-weight: 600;
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-        }
-
-        .audio-btn:hover {
-            border-color: #667eea;
-            background: #f8f9ff;
-        }
-
-        .audio-btn.active {
-            background: #667eea;
-            border-color: #667eea;
-            color: white;
-        }
-
-        .mic-section {
-            display: flex;
-            gap: 10px;
-            flex-wrap: wrap;
-        }
-
-        .mic-btn {
-            padding: 10px 20px;
-            background: white;
-            border: 2px solid #e0e0e0;
-            color: #667eea;
-            font-size: 13px;
-            border-radius: 8px;
-            cursor: pointer;
-            font-weight: 600;
-            transition: all 0.2s ease;
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-        }
-
-        .mic-btn:hover {
-            border-color: #667eea;
-            background: #f8f9ff;
-        }
-
-        .mic-btn.active {
-            background: #667eea;
-            border-color: #667eea;
-            color: white;
-        }
-
-        .mic-status {
-            padding: 10px 15px;
-            background: #f8f9ff;
-            border: 2px solid #e0e0e0;
-            border-radius: 8px;
-            font-size: 13px;
-            color: #667eea;
-        }
-
         .instructions {
             background: white;
             border-radius: 12px;
@@ -777,22 +658,6 @@
                 </div>
             </div>
 
-            <div style="margin-bottom: 15px;">
-                <label class="control-label" style="display: block; margin-bottom: 10px;">Audio</label>
-                <div class="audio-section">
-                    <div class="audio-upload-wrapper">
-                        <input type="file" id="audioInput" class="audio-input" accept="audio/*">
-                        <button id="uploadBtn" class="upload-btn">📁 Load Audio</button>
-                        <div class="audio-filename" id="audioFilename">No audio loaded</div>
-                    </div>
-                    <div class="audio-controls">
-                        <button id="playBtn" class="audio-btn">▶ Play</button>
-                        <button id="pauseBtn" class="audio-btn">⏸ Pause</button>
-                        <button id="clearAudioBtn" class="audio-btn">✕ Clear</button>
-                    </div>
-                </div>
-            </div>
-
     <div class="instructions">
         <h3>How to Use Frempo</h3>
         <div class="instructions-list">
@@ -902,16 +767,6 @@
         const beatSummarySection = document.getElementById('beatSummarySection');
         const beatSummaryContent = document.getElementById('beatSummaryContent');
 
-        // Audio Elements
-        const audioInput = document.getElementById('audioInput');
-        const uploadBtn = document.getElementById('uploadBtn');
-        const audioFilename = document.getElementById('audioFilename');
-        const playBtn = document.getElementById('playBtn');
-        const pauseBtn = document.getElementById('pauseBtn');
-        const clearAudioBtn = document.getElementById('clearAudioBtn');
-        const waveformSection = document.getElementById('waveformSection');
-        const waveformCanvas = document.getElementById('waveformCanvas');
-
         // Mic Elements
         const micBtn = document.getElementById('micBtn');
         const micStatus = document.getElementById('micStatus');
@@ -924,13 +779,6 @@
         let runStartTime = null;
         let countdownActive = false;
 
-        // Audio
-        let audioContext = null;
-        let audioBuffer = null;
-        let audioSource = null;
-        let analyser = null;
-        let isPlaying = false;
-
         // Mic
         let micStream = null;
         let micActive = false;
@@ -938,13 +786,7 @@
         let lastBeatTime = 0;
         const beatDetectionThreshold = 40; // Sensitivity threshold
         const beatCooldown = 100; // ms between detectable beats
-
-        // Initialize audio context
-        function initAudioContext() {
-            if (!audioContext) {
-                audioContext = new (window.AudioContext || window.webkitAudioContext)();
-            }
-        }
+        
 
         // Countdown sequence
         async function startCountdown() {
@@ -1104,84 +946,6 @@
             displayRangeStart.textContent = rangeStartInput.value;
             drawTimeline();
         });
-
-        // Audio handling
-        uploadBtn.addEventListener('click', () => audioInput.click());
-        audioInput.addEventListener('change', async (e) => {
-            const file = e.target.files[0];
-            if (file) {
-                audioFilename.textContent = file.name;
-                const arrayBuffer = await file.arrayBuffer();
-                initAudioContext();
-                audioBuffer = await audioContext.decodeAudioData(arrayBuffer);
-                waveformSection.classList.add('active');
-                drawWaveform();
-            }
-        });
-
-        playBtn.addEventListener('click', () => {
-            if (audioBuffer && !isPlaying) {
-                initAudioContext();
-                audioSource = audioContext.createBufferSource();
-                audioSource.buffer = audioBuffer;
-                analyser = audioContext.createAnalyser();
-                audioSource.connect(analyser);
-                analyser.connect(audioContext.destination);
-                audioSource.start(0);
-                isPlaying = true;
-                playBtn.classList.add('active');
-                pauseBtn.classList.remove('active');
-            }
-        });
-
-        pauseBtn.addEventListener('click', () => {
-            if (isPlaying && audioSource) {
-                audioSource.stop();
-                isPlaying = false;
-                playBtn.classList.remove('active');
-                pauseBtn.classList.add('active');
-            }
-        });
-
-        clearAudioBtn.addEventListener('click', () => {
-            audioBuffer = null;
-            audioFilename.textContent = 'No audio loaded';
-            waveformSection.classList.remove('active');
-            isPlaying = false;
-            playBtn.classList.remove('active');
-            pauseBtn.classList.remove('active');
-        });
-
-        // Waveform drawing
-        function drawWaveform() {
-            if (!audioBuffer) return;
-            
-            const canvas = waveformCanvas;
-            const ctx = canvas.getContext('2d');
-            const data = audioBuffer.getChannelData(0);
-            const step = Math.ceil(data.length / canvas.width);
-            const amp = canvas.height / 2;
-            
-            ctx.fillStyle = '#f8f9ff';
-            ctx.fillRect(0, 0, canvas.width, canvas.height);
-            ctx.strokeStyle = '#667eea';
-            ctx.lineWidth = 1;
-            
-            ctx.beginPath();
-            for (let i = 0; i < canvas.width; i++) {
-                let min = 1.0;
-                let max = -1.0;
-                for (let j = 0; j < step; j++) {
-                    const datum = data[i * step + j];
-                    if (datum < min) min = datum;
-                    if (datum > max) max = datum;
-                }
-                ctx.lineTo(i, amp - max * amp);
-                ctx.lineTo(i, amp - min * amp);
-            }
-            ctx.stroke();
-        }
-});
         
         // Initial draw
         drawTimeline();
